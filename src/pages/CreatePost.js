@@ -13,8 +13,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 
 export default function CreatePost({ navigation }) {
-    var teste= 'nome';
-    const [email, setEmail] = useState(null);
+    var teste = 'nome';
+    const [username, setUsername] = useState(null);
     const [user, setUser] = useState('')
     const [pass1, setPass1] = useState(null)
     const [pass2, setPass2] = useState(null);
@@ -46,17 +46,17 @@ export default function CreatePost({ navigation }) {
                <Picker.Item label = "Adicionar Pet" value = "maria" color={"#00f"}  />
             </Picker>
 
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>Usuário</Text>
             <TextInput
                 style={styles.input}
-                placeholder="Email"
+                placeholder="Nome de usuário"
                 placeholderTextColor="#999"
-                keyboardType="email-address"
+                keyboardType="default"
                 autoCompleteType="email"
                 autoCapitalize="none"
                 autoCorrect={false}
-                value={email}
-                onChangeText={setEmail}
+                value={username}
+                onChangeText={setUsername}
             />
 
             <Text style={styles.label}>Senha</Text>

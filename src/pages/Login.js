@@ -11,7 +11,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import CreateAcc from './CreateAccount';
 
 export default function Login({ navigation }) {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [pass, setPass] = useState('');
 
     async function handleSubmit() {
@@ -20,14 +20,14 @@ export default function Login({ navigation }) {
         try {
             await api.post('/createauth', {}, {
                 headers: {
-                    'email': email,
+                    'username': username,
                     'pass': pass
                 }
             }).then(async Res => {
                 if (Res.data.auth) {
                     await AsyncStorage.setItem('token', Res.data._id)
                     await AsyncStorage.setItem('user', Res.data.user._id)
-                    await AsyncStorage.setItem('email', Res.data.user.email)
+                    await AsyncStorage.setItem('username', Res.data.user.username)
                     await AsyncStorage.setItem('firstName', Res.data.user.firstName)
                     await AsyncStorage.setItem('lastName', Res.data.user.lastName)
                     await AsyncStorage.setItem('male', Res.data.user.male.toString())
@@ -41,7 +41,7 @@ export default function Login({ navigation }) {
                 Alert.alert("Erro de conexão", "Não conseguimos contactar o servidor")
             } else if (error.message == "Request failed with status code 401") {
                 Alert.alert('Erro ao Autenticar:',
-                    'Email ou senha invalida',
+                    'Nome de usuário ou senha invalida',
                     [
                         { text: 'Tentar novamente', onPress: () => { setPass("") } },
                         {
@@ -81,12 +81,12 @@ export default function Login({ navigation }) {
                 style={styles.input}
                 placeholder="Usuário"
                 placeholderTextColor="#999"
-                keyboardType="email-address"
+                keyboardType="default"
                 autoCapitalize="none"
                 autoCompleteType="email"
                 autoCorrect={false}
-                value={email}
-                onChangeText={setEmail}
+                value={username}
+                onChangeText={setUsername}
             />
 
             <Text style={styles.label}>Senha</Text>

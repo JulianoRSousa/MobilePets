@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 
 export default function CreateAccount({ navigation }) {
-    const [email, setEmail] = useState(null);
+    const [username, setUsername] = useState(null);
     const [pass1, setPass1] = useState(null)
     const [pass2, setPass2] = useState(null);
     const [fullname, setFullname] = useState(null);
@@ -24,8 +24,8 @@ export default function CreateAccount({ navigation }) {
 
 
     async function CreateAccount() {
-        if (email == null || fullname == null || pass1 == null || pass1 == null ||
-            email == '' || fullname == '' || pass1 == '' || pass1 == '') {
+        if (username == null || fullname == null || pass1 == null || pass1 == null ||
+            username == '' || fullname == '' || pass1 == '' || pass1 == '') {
             Alert.alert("", "Um ou mais campos não foram preenchidos")
         } else {
             if (pass1 == pass2) {
@@ -38,7 +38,7 @@ export default function CreateAccount({ navigation }) {
                     try {
                         await api.post('/createlogin', {}, {
                             headers: {
-                                'email': email,
+                                'username': username,
                                 'pass': pass1,
                                 'fullname': fullname,
                                 'male': male
@@ -50,7 +50,7 @@ export default function CreateAccount({ navigation }) {
                                     console.log("Começou a salvar no sqLite")
                                     await AsyncStorage.setItem('token', Res.data._id)
                                     await AsyncStorage.setItem('user', Res.data.user._id)
-                                    await AsyncStorage.setItem('email', Res.data.user.email)
+                                    await AsyncStorage.setItem('username', Res.data.user.username)
                                     await AsyncStorage.setItem('firstName', Res.data.user.firstName)
                                     await AsyncStorage.setItem('lastName', Res.data.user.lastName)
                                     await AsyncStorage.setItem('male', Res.data.user.male.toString())
@@ -106,12 +106,12 @@ export default function CreateAccount({ navigation }) {
                 style={styles.input}
                 placeholder="Nome de Usuário"
                 placeholderTextColor="#999"
-                keyboardType="email-address"
+                keyboardType="default"
                 autoCompleteType="email"
                 autoCapitalize="none"
                 autoCorrect={false}
-                value={email}
-                onChangeText={setEmail}
+                value={username}
+                onChangeText={setUsername}
             />
 
             <Text style={styles.label}>Senha</Text>
