@@ -1,7 +1,8 @@
 import axios from 'axios';
+import * as env from '../../dotEnv';
 
 const api = axios.create({
-    baseURL: 'https://back-apipets.herokuapp.com'
+    baseURL: env.API_URL
 })
 
 export default api;

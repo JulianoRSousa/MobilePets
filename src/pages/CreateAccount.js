@@ -7,7 +7,8 @@ import {
     TextInput,
     TouchableOpacity,
     Alert,
-    Picker,
+    StatusBar,
+    Picker
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -80,7 +81,13 @@ export default function CreateAccount({ navigation }) {
 
 
     return <View style={styles.container}>
-
+        <StatusBar
+            barStyle="default"
+            hidden={false}
+            backgroundColor="#FF8637"
+            translucent={false}
+            networkActivityIndicatorVisible={true}
+        />
         <View>
             <Text style={styles.label}>Nome Completo</Text>
             <TextInput
@@ -94,10 +101,10 @@ export default function CreateAccount({ navigation }) {
                 onChangeText={setFullname}
             />
 
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>Usuário</Text>
             <TextInput
                 style={styles.input}
-                placeholder="Email"
+                placeholder="Nome de Usuário"
                 placeholderTextColor="#999"
                 keyboardType="email-address"
                 autoCompleteType="email"
@@ -133,12 +140,13 @@ export default function CreateAccount({ navigation }) {
                 value={pass2}
                 onChangeText={setPass2}
             />
+            <Text style={styles.label}>Sexo:</Text>
 
-            <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 17 }}>Sexo:  </Text>
+            <View style={styles.pickerView}>
+
                 <Picker
                     selectedValue={male}
-                    style={{ height: 50, width: 190 }}
+                    style={{ height: 35, width: 250, color: 'black'}}
                     onValueChange={(itemValue, itemIndex) => setMale(itemValue)
                     }>
                     <Picker.Item label="Masculino" value={true} />
@@ -147,13 +155,11 @@ export default function CreateAccount({ navigation }) {
             </View>
 
 
-            <KeyboardAvoidingView>
-                <TouchableOpacity
-                    onPress={() => CreateAccount()}
-                    style={styles.buttonAccount}>
-                    <Text style={styles.buttonText}>Criar uma conta</Text>
-                </TouchableOpacity>
-            </KeyboardAvoidingView>
+            <TouchableOpacity
+                onPress={() => CreateAccount()}
+                style={styles.buttonAccount}>
+                <Text style={styles.buttonText}>Criar uma conta</Text>
+            </TouchableOpacity>
         </View>
     </View>
 }
@@ -165,7 +171,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'stretch',
         paddingHorizontal: 30,
-        marginTop: 30,
+        backgroundColor: '#FF8637'
     },
     form: {
         alignSelf: 'stretch',
@@ -174,8 +180,8 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: 'bold',
-        color: '#444',
-        marginBottom: 8,
+        color: 'white',
+        marginBottom: 4,
     },
     input: {
         borderWidth: 1,
@@ -184,8 +190,19 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#444',
         height: 44,
-        marginBottom: 10,
-        borderRadius: 2,
+        marginBottom: 2,
+        borderRadius: 8,
+        backgroundColor: 'white'
+    },
+    pickerView: {
+        flexDirection: 'column-reverse',
+        borderWidth: 1,
+        borderColor: "#ddd",
+        marginBottom: 6,
+        borderRadius: 8,
+        height: 44,
+        backgroundColor: 'white',
+        
     },
     button: {
         height: 42,
@@ -198,6 +215,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#226cd4",
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: 8,
     },
     buttonText: {
         color: '#fff',

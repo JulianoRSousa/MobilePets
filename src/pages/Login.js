@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator, KeyboardAvoidingView, Image, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+    View, StatusBar, ActivityIndicator, KeyboardAvoidingView,
+    Image, Text, StyleSheet, TextInput, TouchableOpacity, Alert
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../services/api';
@@ -63,13 +66,20 @@ export default function Login({ navigation }) {
 
     return <View style={styles.container}>
 
+        <StatusBar
+            barStyle="default"
+            hidden={false}
+            backgroundColor="#FF8637"
+            translucent={false}
+            networkActivityIndicatorVisible={true}
+        />
         <KeyboardAvoidingView
-            behavior="padding"
+            behavior="height"
             style={styles.form}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>Usuário</Text>
             <TextInput
                 style={styles.input}
-                placeholder="Email"
+                placeholder="Usuário"
                 placeholderTextColor="#999"
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -110,6 +120,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#FF8637'
     },
     form: {
         alignSelf: 'stretch',
@@ -118,7 +129,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: 'bold',
-        color: '#444',
+        color: 'white',
         marginBottom: 8,
     },
     input: {
@@ -126,22 +137,26 @@ const styles = StyleSheet.create({
         borderColor: "#ddd",
         paddingHorizontal: 20,
         fontSize: 16,
-        color: '#444',
+        color: '#FF8637',
         height: 44,
         marginBottom: 20,
-        borderRadius: 2,
+        borderRadius: 8,
+        backgroundColor: 'white',
     },
     button: {
         height: 42,
         backgroundColor: "#f05a5b",
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: 8,
+        marginBottom: 4
     },
     buttonAccount: {
         height: 42,
         backgroundColor: "#226cd4",
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: 8,
     },
     buttonText: {
         color: '#fff',
