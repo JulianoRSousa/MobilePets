@@ -15,7 +15,6 @@ export default function FirstScreen({ navigation }) {
         if (await AsyncStorage.getItem('token') != '000000000000000000000000') {
             auth();
         }else{
-            console.log("era pra ir pro login");
             navigation.navigate('Login');
         }
     }
@@ -34,7 +33,7 @@ export default function FirstScreen({ navigation }) {
     
                     await AsyncStorage.setItem('token', Res.data._id)
                     await AsyncStorage.setItem('user', Res.data.user._id)
-                    await AsyncStorage.setItem('email', Res.data.user.email)
+                    await AsyncStorage.setItem('username', Res.data.user.username)
                     await AsyncStorage.setItem('firstName', Res.data.user.firstName)
                     await AsyncStorage.setItem('lastName', Res.data.user.lastName)
                     await AsyncStorage.setItem('male', Res.data.user.male.toString())

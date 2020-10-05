@@ -15,8 +15,6 @@ export default function Login({ navigation }) {
     const [pass, setPass] = useState('');
 
     async function handleSubmit() {
-        console.log("iniciou handleSubmit")
-
         try {
             await api.post('/createauth', {}, {
                 headers: {
@@ -32,7 +30,6 @@ export default function Login({ navigation }) {
                     await AsyncStorage.setItem('lastName', Res.data.user.lastName)
                     await AsyncStorage.setItem('male', Res.data.user.male.toString())
                     navigation.navigate('Feed')
-                    console.log("It should be Feed page!");
                 }
             })
         } catch (error) {
@@ -40,8 +37,7 @@ export default function Login({ navigation }) {
             if (error.message == "Request failed with status code 404") {
                 Alert.alert("Erro de conexão", "Não conseguimos contactar o servidor")
             } else if (error.message == "Request failed with status code 401") {
-                Alert.alert('Erro ao Autenticar:',
-                    'Nome de usuário ou senha invalida',
+                Alert.alert('Nome de usuário ou senha invalida', ''
                     [
                         { text: 'Tentar novamente', onPress: () => { setPass("") } },
                         {
@@ -62,6 +58,30 @@ export default function Login({ navigation }) {
             }
         }
     }
+
+    async function startLoggin() {
+
+        if (username && (pass.length > 5)) {
+            handleSubmit();
+        } else {
+            if (!username || !pass) {
+                Alert.alert('', 'Preencha todos os campos',
+                    [
+                        { text: 'OK' },
+                    ], { cancelable: true })
+            } else {
+                console.log("confere pass < 6")
+                if (pass.length < 6) {
+                    console.log("entrou")
+                    Alert.alert('Senha invalida','Minimo 6 digitos', 
+                        [
+                            { text: 'OK' },
+                        ], { cancelable: true })
+                }
+            }
+        }
+    }
+
 
 
     return <View style={styles.container}>
@@ -102,7 +122,7 @@ export default function Login({ navigation }) {
                 onChangeText={setPass}
             />
             <TouchableOpacity
-                onPress={() => handleSubmit()}
+                onPress={() => startLoggin()}
                 style={styles.button}>
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
