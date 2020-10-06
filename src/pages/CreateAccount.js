@@ -24,8 +24,8 @@ export default function CreateAccount({ navigation }) {
 
 
     async function CreateAccount() {
-        if (username == null || fullname == null || pass1 == null || pass1 == null ||
-            username == '' || fullname == '' || pass1 == '' || pass1 == '') {
+        if (!username || !fullname || !pass1 || !pass2 ||
+            username == '' || fullname == '' || pass1 == '' || pass2 == '') {
             Alert.alert("", "Um ou mais campos não foram preenchidos")
         } else {
             if (pass1 == pass2) {

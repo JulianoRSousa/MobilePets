@@ -15,14 +15,17 @@ export default function Feed({ navigation }) {
 
 
     async function getData() {
-        await api.get('/getallposts')
+        console.log(await api.get('/getFeed', {
+            headers: {
+                token: await AsyncStorage.getItem('token')
+            }
+        }))
     }
 
     useEffect(() => {
 
         getData();
         console.log("useEffect Feed page is ready!");
-
     }, [])
 
     async function logout() {
@@ -40,8 +43,8 @@ export default function Feed({ navigation }) {
         navigation.navigate('Login');
 
     }
-    
-    function navegador(){
+
+    function navegador() {
         navigation.navigate('CreatePost');
     }
 
@@ -52,12 +55,12 @@ export default function Feed({ navigation }) {
 
 
         <View>
-        <View style={{ borderWidth: 2, flexDirection: 'row', backgroundColor:"#ff8636" }}>
-            <Text>Tela FEED</Text>
-        </View>
-        <View style={{ borderWidth: 2, flexDirection: 'row', backgroundColor:"#ff8636" }}>
-            <Button title="Criar um post" onPress={navegador}></Button>
-        </View>
+            <View style={{ borderWidth: 2, flexDirection: 'row', backgroundColor: "#ff8636" }}>
+                <Text>Tela FEED</Text>
+            </View>
+            <View style={{ borderWidth: 2, flexDirection: 'row', backgroundColor: "#ff8636" }}>
+                <Button title="Criar um post" onPress={navegador}></Button>
+            </View>
         </View>
 
         <PostView key={''}></PostView>

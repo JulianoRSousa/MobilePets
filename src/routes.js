@@ -15,7 +15,12 @@ import CreatePost from './pages/CreatePost';
 
 const Routes = createAppContainer(
   createDrawerNavigator({
-    
+    FirstScreen: {
+      screen: FirstScreen,
+      navigationOptions: {
+        drawerLabel:"Hook",
+      }
+    },
     Login: {
       screen: Login,
       navigationOptions: {

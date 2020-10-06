@@ -37,7 +37,7 @@ export default function Login({ navigation }) {
             if (error.message == "Request failed with status code 404") {
                 Alert.alert("Erro de conexão", "Não conseguimos contactar o servidor")
             } else if (error.message == "Request failed with status code 401") {
-                Alert.alert('Nome de usuário ou senha invalida', ''
+                Alert.alert('Nome de usuário ou senha invalida', '',
                     [
                         { text: 'Tentar novamente', onPress: () => { setPass("") } },
                         {
