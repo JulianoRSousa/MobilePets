@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import api from '../services/api';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 
 export default function PostView({ }) {
@@ -10,11 +12,16 @@ export default function PostView({ }) {
     const [postlists, setPostlists] = useState([]);
 
     useEffect(() => {
-        async function getPosts() {
-            await api.get('/getallposts').then(Response => setPostlists(Response.data));
-        }
-
-        getPosts();
+        async function getData() {
+            await api
+              .get('/getFeed', {
+                headers: {
+                  token: await AsyncStorage.getItem('token'),
+                },
+              })
+              .then(response => setPostlists(response.data));
+            }
+        getData();
     }, []);
 
     return (
@@ -30,7 +37,7 @@ export default function PostView({ }) {
                         <View style={{ flex: 1, height: hp('8%') }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{ flex: 1, alignSelf: 'center' }}>
-                                    <Text style={{ fontSize: 20, textAlign: 'left', textAlignVertical: 'center', color: 'red', marginLeft: hp('2%') }}>Nome do Pet</Text>
+                                    <Text style={{ fontSize: 20, textAlign: 'left', textAlignVertical: 'center', color: 'red', marginLeft: hp('2%') }}>{item.pet}</Text>
                                 </View>
                                 <Icon name="menu-down" size={hp('5%')} color="#000" />
                             </View>
