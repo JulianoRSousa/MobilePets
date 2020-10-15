@@ -70,9 +70,7 @@ export default function Login({ navigation }) {
                         { text: 'OK' },
                     ], { cancelable: true })
             } else {
-                console.log("confere pass < 6")
                 if (pass.length < 6) {
-                    console.log("entrou")
                     Alert.alert('Senha invalida','Minimo 6 digitos', 
                         [
                             { text: 'OK' },

@@ -9,13 +9,14 @@ import {
     Picker,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import Feed from '../pages/Feed';
 
 import api from '../services/api';
 
 export default function CreatePost({ navigation }) {
     var teste = 'nome';
     const [username, setUsername] = useState(null);
-    const [user, setUser] = useState('')
+    const [status, setStatus] = useState('')
     const [pass1, setPass1] = useState(null)
     const [pass2, setPass2] = useState(null);
     const [fullname, setFullname] = useState(null);
@@ -39,13 +40,17 @@ export default function CreatePost({ navigation }) {
     return <View style={styles.container}>
 
         <View>
-            <Text style={styles.label}>Nome Completo</Text>
-            <Picker selectedValue = {teste} onValueChange = {updateUser}>
-               <Picker.Item label = "Steve" value = "steve"  />
-               <Picker.Item label = "Ellen" value = "ellen" />
-               <Picker.Item label = "Adicionar Pet" value = "maria" color={"#00f"}  />
-            </Picker>
+            <Text style={styles.label}>Criar post</Text>
 
+<View style={{flexDirection:'column'}}>
+            <Text style={styles.label}>Tipo de post</Text>
+
+            <Picker selectedValue = {teste} onValueChange = {setStatus}>
+               <Picker.Item label = "Encontrei um pet" value = "found"  />
+               <Picker.Item label = "Perdi um pet" value = "lost" />
+               <Picker.Item label = "Adicionar Pet" onPress={navigation.navigate('Feed')} color={"#00f"}  />
+            </Picker>
+</View>
             <Text style={styles.label}>Usuário</Text>
             <TextInput
                 style={styles.input}
