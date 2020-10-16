@@ -20,15 +20,15 @@ export default function PostView({}) {
 
   useEffect(() => {
     async function getData() {
-            await api
-              .get('/getFeed', {
-                headers: {
-                  token: await AsyncStorage.getItem('token'),
-                },
-              })
-              .then(response => setPostlists(response.data));
-            }
-   /* async function getData() {
+      await api
+        .get('/getFeed', {
+          headers: {
+            token: await AsyncStorage.getItem('token'),
+          },
+        })
+        .then(response => setPostlists(response.data));
+    }
+    /* async function getData() {
       const feed = await api.get('/getFeed', {
         headers: {
           token: await AsyncStorage.getItem('token'),
@@ -57,50 +57,81 @@ export default function PostView({}) {
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => (
           <View style={styles.container}>
-            <View style={{flex: 1, height: hp('8%')}}>
+              <Image style={styles.picture} source={{uri: item.post_picture}} />
+            <View style={{flex: 1, height: wp('7%'), translateY: -wp('99%')}}>
               <View style={{flexDirection: 'row'}}>
-                <View style={{flex: 1, alignSelf: 'center'}}>
-                  <Text
+                <Text
+                  style={{
+                    fontSize: wp('5.5%'),
+                    textAlign: 'left',
+                    textAlignVertical: 'center',
+                    color: 'white',
+                    marginLeft: hp('2%'),
+                    fontFamily: 'Chewy-Regular',
+                    backgroundColor: '#FF8637dd',
+                    alignContent: 'flex-start',
+                    paddingLeft: wp('2%'),
+                    paddingRight: wp('2%'),
+                    borderRadius: wp('3%'),
+                    borderTopLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                  }}>
+                  {item.pet_name}
+                </Text>
+                <View style={{flex: 1, flexDirection: 'row-reverse', marginStart: wp('1.5%')}}>
+                  <Icon
+                    name="dots-vertical"
                     style={{
-                      fontSize: 20,
-                      textAlign: 'left',
-                      textAlignVertical: 'center',
-                      color: 'red',
-                      marginLeft: hp('2%'),
-                    }}>
-                    {item.pet_name}
-                  </Text>
+                      alignContent: 'flex-end',
+                      backgroundColor: '#0002',
+                      borderRadius: wp('4%'),
+                      paddingLeft: wp('1%'),
+                      paddingRight: wp('1%'),
+                    }}
+                    size={hp('3%')}
+                    color="#000"
+                  />
                 </View>
-                <Icon name="menu-down" size={hp('5%')} color="#000" />
               </View>
             </View>
-            <Image style={styles.picture} source={{uri: item.post_picture}} />
 
             <View style={{marginBottom: 30}}>
               <View
                 style={{
                   borderBottomColor: '#000',
                   borderBottomWidth: 1,
-                  borderBottomStartRadius: 20,
-                  borderBottomEndRadius: 20,
+                  borderBottomStartRadius: wp('4%'),
+                  borderBottomEndRadius: wp('4%'),
                   alignItems: 'center',
                   flexDirection: 'row',
+                  backgroundColor: '#FF863744',
+                  transform: [{translateY: -wp('26%')}],
                 }}>
                 <View
                   style={{
                     alignContent: 'center',
-                    transform: [{translateY: -hp('5%')}],
                   }}>
                   <Image
                     style={styles.profilePicture}
                     source={{uri: item.user_picture}}
                   />
-                  <Text>{item.user_name}</Text>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontFamily: 'Chewy-Regular',
+                      backgroundColor: '#FF8637dd',
+                      alignContent: 'flex-start',
+                      paddingLeft: wp('2%'),
+                      paddingRight: wp('2%'),
+                      borderRadius: wp('3%'),
+                      borderTopLeftRadius: 0,
+                      borderBottomRightRadius: 0,
+                    }}>
+                    {item.user_name}
+                  </Text>
                 </View>
-                <View
-                  style={styles.view2}>
-                  <Text style={styles.textStatus}>{item.post_status}</Text>
-                </View>
+                  <Text style={{fontFamily: 'Chewy-Regular', fontSize: wp('5%'), color:'#29f',
+                    transform:[{translateX: -wp('7%')}, {translateY: -wp('5%')}]}}>{item.post_status}</Text>
               </View>
               <Text style={styles.price}>{item.post_description}</Text>
               <Text style={styles.price}>{item.user_name}</Text>
@@ -124,6 +155,7 @@ const styles = StyleSheet.create({
     transform: [{translateY: hp('3%')}],
     flexDirection: 'row',
     flex: 1,
+    backgroundColor:'red'
   },
   listItem: {
     aspectRatio: 1.5,
@@ -145,8 +177,10 @@ const styles = StyleSheet.create({
   },
   picture: {
     width: wp('100%'),
-    height: hp('70%'),
+    height: wp('100%'),
     resizeMode: 'cover',
+    overflow: 'hidden',
+    borderRadius: wp('4%'),
   },
   textStatus: {
     fontSize: 18,
@@ -158,8 +192,6 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 12,
-    color: '#999',
-    marginTop: 5,
   },
   button: {
     height: 42,

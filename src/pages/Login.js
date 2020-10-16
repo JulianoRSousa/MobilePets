@@ -8,7 +8,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import CreateAcc from './CreateAccount';
+import CreateAccount from './CreateAccount';
+import ForgotPassword from './ForgotPassword';
 
 export default function Login({ navigation }) {
     const [username, setUsername] = useState('');
@@ -42,14 +43,7 @@ export default function Login({ navigation }) {
                         { text: 'Tentar novamente', onPress: () => { setPass("") } },
                         {
                             text: 'Esqueci minha senha',
-                            onPress: () => {
-                                Alert.alert('', 'Uma confirmação foi enviada ao seu email!',
-                                    [
-                                        { text: 'OK' },
-                                        { text: 'Não tenho acesso ao email', onPress: () => { Alert.alert('Direcionamento para site') }, style: 'cancel' }
-                                    ], { cancelable: false })
-                            },
-                            style: 'cancel',
+                            onPress: () => { navigation.navigate('ForgotPassword') }
                         }
                     ],
                     { cancelable: false })
@@ -125,7 +119,7 @@ export default function Login({ navigation }) {
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => navigation.navigate('CreateAcc')}
+                onPress={() => navigation.navigate('CreateAccount')}
                 style={styles.buttonAccount}>
                 <Text style={styles.buttonText}>Criar uma conta</Text>
             </TouchableOpacity>
