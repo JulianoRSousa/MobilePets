@@ -15,6 +15,12 @@ import {Settings} from 'react-native';
 
 const AuthStack = createStackNavigator(
   {
+    FirstScreen: {
+      screen: FirstScreen,
+      navigationOptions: {
+        headerTitle: 'Loading',
+      },
+    },
     SignIn: {
       screen: Login,
       navigationOptions: {
@@ -182,7 +188,7 @@ const AppModalStack = createStackNavigator(
 const App = createSwitchNavigator(
   {
     Loading: {
-      screen: Example,
+      screen: AuthStack,
     },
     Auth: {
       screen: AuthStack,
