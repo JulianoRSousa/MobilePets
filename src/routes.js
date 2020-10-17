@@ -1,77 +1,99 @@
-
 import React from 'react';
-import {
-  createAppContainer,
-  createSwitchNavigator,
-} from 'react-navigation';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-import { createStackNavigator } from 'react-navigation-stack';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {createDrawerNavigator} from 'react-navigation-drawer';
+import {createStackNavigator} from 'react-navigation-stack';
 
-import Login from '../src/pages/Login'
+import Login from '../src/pages/Login';
 
 import Example from '../Example';
 import CreateAccount from './pages/CreateAccount';
 import ForgotPassword from '../src/pages/ForgotPassword';
 import Feed from '../src/pages/Feed';
 import FirstScreen from '../src/pages/FirstScreen';
+import {Settings} from 'react-native';
 
-const AuthStack = createStackNavigator({
-  SignIn: {
-    screen: Login,
-    navigationOptions: {
-      headerTitle: 'Entrar',
+const AuthStack = createStackNavigator(
+  {
+    SignIn: {
+      screen: Login,
+      navigationOptions: {
+        headerTitle: 'Entrar',
+      },
+    },
+    CreateAccount: {
+      screen: CreateAccount,
+      navigationOptions: {
+        headerTitle: 'Criar uma conta',
+      },
+    },
+    ForgotPassword: {
+      screen: ForgotPassword,
+      navigationOptions: {
+        headerTitle: 'Forgot Password',
+      },
     },
   },
-  CreateAccount: {
-    screen: CreateAccount,
+  {
+    headerMode: 'none',
     navigationOptions: {
-      headerTitle: 'Criar uma conta',
+      headerVisible: false,
     },
   },
-  ForgotPassword: {
-    screen: ForgotPassword,
-    navigationOptions: {
-      headerTitle: 'Forgot Password',
-    },
-  },
-});
+);
 
-const FeedStack = createStackNavigator({
-  Feed: {
-    screen: Feed,
-    navigationOptions: {
-      headerTitle: 'Feed',
+const FeedStack = createStackNavigator(
+  {
+    Feed: {
+      screen: Feed,
+      navigationOptions: {
+        headerTitle: 'Feed',
+      },
+    },
+    Details: {
+      screen: Example,
+      navigationOptions: {
+        headerTitle: 'Details',
+      },
     },
   },
-  Details: {
-    screen: Example,
+  {
+    headerMode: 'none',
     navigationOptions: {
-      headerTitle: 'Details',
+      headerVisible: false,
     },
   },
-});
+);
 
-const SearchStack = createStackNavigator({
-  Search: {
-    screen: Example,
-    navigationOptions: {
-      headerTitle: 'Search',
+const SearchStack = createStackNavigator(
+  {
+    Search: {
+      screen: Example,
+      navigationOptions: {
+        headerTitle: 'Search',
+      },
+    },
+    Details: {
+      screen: Example,
+      navigationOptions: {
+        headerTitle: 'Details',
+      },
     },
   },
-  Details: {
-    screen: Example,
+  {
+    headerMode: 'none',
     navigationOptions: {
-      headerTitle: 'Details',
+      headerVisible: false,
     },
   },
-});
+);
 
 const DiscoverStack = createStackNavigator({
   Discover: {
     screen: Example,
     navigationOptions: {
       headerTitle: 'Discover',
+      header: false,
     },
   },
   Details: {
@@ -82,42 +104,63 @@ const DiscoverStack = createStackNavigator({
   },
 });
 
-const MainTabs = createBottomTabNavigator({
-  Feed: {
-    screen: FeedStack,
-    navigationOptions: {
-      tabBarLabel: 'Feed',
+const MainTabs = createBottomTabNavigator(
+  {
+    Feed: {
+      screen: FeedStack,
+      navigationOptions: {
+        tabBarLabel: 'Feed',
+      },
+    },
+    Search: {
+      screen: SearchStack,
+      navigationOptions: {
+        tabBarLabel: 'Search',
+      },
+    },
+    Discover: {
+      screen: DiscoverStack,
+      navigationOptions: {
+        tabBarLabel: 'Discover',
+      },
     },
   },
-  Search: {
-    screen: SearchStack,
+  {
+    headerMode: 'none',
     navigationOptions: {
-      tabBarLabel: 'Search',
+      headerVisible: false,
     },
   },
-  Discover: {
-    screen: DiscoverStack,
-    navigationOptions: {
-      tabBarLabel: 'Discover',
-    },
-  },
-});
+);
 
-
-const SettingsStack = createStackNavigator({
-  SettingsList: {
-    screen: Example,
-    navigationOptions: {
-      headerTitle: 'Settings List',
+const SettingsStack = createStackNavigator(
+  {
+    SettingsList: {
+      screen: Example,
+      navigationOptions: {
+        headerTitle: 'Settings List',
+      },
+    },
+    Profile: {
+      screen: Example,
+      navigationOptions: {
+        headerTitle: 'Profile',
+      },
     },
   },
-  Profile: {
-    screen: Example,
+  {
+    headerMode: 'none',
     navigationOptions: {
-      headerTitle: 'Profile',
+      headerVisible: false,
     },
   },
-});
+  {
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    },
+  },
+);
 
 const MainDrawer = createDrawerNavigator({
   MainTabs: MainTabs,
@@ -134,20 +177,34 @@ const AppModalStack = createStackNavigator(
   {
     mode: 'modal',
     headerMode: 'none',
-  }
+  },
+  {
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    },
+  },
 );
 
-const App = createSwitchNavigator({
-  Loading: {
-    screen: Example,
+const App = createSwitchNavigator(
+  {
+    Loading: {
+      screen: Example,
+    },
+    Auth: {
+      screen: AuthStack,
+    },
+    App: {
+      screen: AppModalStack,
+    },
   },
-  Auth: {
-    screen: AuthStack,
+  {
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    },
   },
-  App: {
-    screen: AppModalStack,
-  },
-});
+);
 
 export default createAppContainer(App);
 /*
