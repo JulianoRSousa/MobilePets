@@ -37,7 +37,7 @@ const AuthStack = createStackNavigator(
   {
     headerMode: 'none',
     navigationOptions: {
-      headerVisible: false,
+      headerShow: false,
     },
   },
 );
@@ -60,7 +60,7 @@ const FeedStack = createStackNavigator(
   {
     headerMode: 'none',
     navigationOptions: {
-      headerVisible: false,
+      headerShow: false,
     },
   },
 );
@@ -83,7 +83,7 @@ const SearchStack = createStackNavigator(
   {
     headerMode: 'none',
     navigationOptions: {
-      headerVisible: false,
+      headerShow: false,
     },
   },
 );
@@ -94,14 +94,7 @@ const DiscoverStack = createStackNavigator({
     navigationOptions: {
       headerTitle: 'Discover',
       header: false,
-    },
-  },
-  Details: {
-    screen: Example,
-    navigationOptions: {
-      headerTitle: 'Details',
-    },
-  },
+    }},
 });
 
 const MainTabs = createBottomTabNavigator(
@@ -128,7 +121,7 @@ const MainTabs = createBottomTabNavigator(
   {
     headerMode: 'none',
     navigationOptions: {
-      headerVisible: false,
+      headerShow: false,
     },
   },
 );
@@ -157,7 +150,7 @@ const SettingsStack = createStackNavigator(
   {
     headerMode: 'none',
     navigationOptions: {
-      headerVisible: false,
+      headerShow: false,
     },
   },
 );
@@ -181,7 +174,7 @@ const AppModalStack = createStackNavigator(
   {
     headerMode: 'none',
     navigationOptions: {
-      headerVisible: false,
+      headerShow: false,
     },
   },
 );
@@ -201,7 +194,7 @@ const App = createSwitchNavigator(
   {
     headerMode: 'none',
     navigationOptions: {
-      headerVisible: false,
+      headerShow: false,
     },
   },
 );

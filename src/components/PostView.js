@@ -6,6 +6,8 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  StatusBar,
+  Button,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -14,9 +16,11 @@ import {
 import api from '../services/api';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as env from '../../dotEnv';
 
 export default function PostView({}) {
   const [postlists, setPostlists] = useState([]);
+  const [userInfo, setUserInfo] = useState([]);
 
   useEffect(() => {
     async function getData() {
@@ -28,6 +32,8 @@ export default function PostView({}) {
         })
         .then(response => setPostlists(response.data));
     }
+
+    
     /* async function getData() {
       const feed = await api.get('/getFeed', {
         headers: {
@@ -46,18 +52,89 @@ export default function PostView({}) {
       console.log(result)
     }*/
     getData();
+    async function getUser() {
+      await api
+        .get('/loadUser', {
+          headers: {
+            token: await AsyncStorage.getItem('token'),
+          },
+        })
+        .then(response => setUserInfo(response.data));
+    }
+    getUser();
   }, []);
+
+  async function logout() {
+    await api.delete('/deleteauth', {
+      headers: {
+        token: await AsyncStorage.getItem('token'),
+      },
+    })
+    await AsyncStorage.setItem('token', '000000000000000000000000');
+    await AsyncStorage.setItem('user', '000000000000000000000000');
+    await AsyncStorage.setItem('email', '000000000000000000000000');
+    await AsyncStorage.setItem('firstName', '000000000000000000000000');
+    await AsyncStorage.setItem('lastName', '000000000000000000000000');
+    await AsyncStorage.setItem('male', true.toString());
+    navigation.navigate('Login');
+  }
+
+  function navegador() {
+    navigation.navigate('CreatePost');
+  }
+
+  function renderHeader() {
+    return (
+    <View>
+    <StatusBar backgroundColor={'#ff8636'} />
+
+    <View style={styles.topLayout}>
+      <View style={styles.view1} />
+      <View style={styles.topBar}>
+        <TouchableOpacity style={styles.topBarInternal}>
+          <Icon name="paw" size={hp('5%')} color="white" />
+          <Text style={styles.appNameText}>{env.APPNAME}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon
+            name="menu"
+            style={{alignContent: 'flex-end'}}
+            size={hp('5%')}
+            color="white"
+          />
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity style={styles.userInfo}>
+        <Image
+          style={styles.picture1}
+          source={{
+            uri: userInfo.picture_url,
+          }}
+        />
+        <View>
+          <Text style={styles.userNameText}>{userInfo.firstName}</Text>
+          <Text style={styles.userInfoText}>144 seguidores</Text>
+          <Text style={styles.userInfoText}> 2 Pets</Text>
+        </View>
+      </TouchableOpacity>
+      <Button title="Criar um post" onPress={navegador} />
+      <Button title='LogOut' onPress={logout}/>
+      <View style={styles.view1} />
+    </View></View>)
+  }
 
   return (
     <View style={styles.container}>
       <FlatList
+        ListHeaderComponent={renderHeader}
         data={postlists}
         vertical
         keyExtractor={post => post.post_id}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => (
-          <View style={styles.container}>
-              <Image style={styles.picture} source={{uri: item.post_picture}} />
+          <View style={styles.container1}>
+            
+            <Image style={styles.picture} source={{uri: item.post_picture}} />
             <View style={{flex: 1, height: wp('7%'), translateY: -wp('99%')}}>
               <View style={{flexDirection: 'row'}}>
                 <Text
@@ -78,7 +155,12 @@ export default function PostView({}) {
                   }}>
                   {item.pet_name}
                 </Text>
-                <View style={{flex: 1, flexDirection: 'row-reverse', marginStart: wp('1.5%')}}>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row-reverse',
+                    marginStart: wp('1.5%'),
+                  }}>
                   <Icon
                     name="dots-vertical"
                     style={{
@@ -130,8 +212,18 @@ export default function PostView({}) {
                     {item.user_name}
                   </Text>
                 </View>
-                  <Text style={{fontFamily: 'Chewy-Regular', fontSize: wp('5%'), color:'#29f',
-                    transform:[{translateX: -wp('7%')}, {translateY: -wp('5%')}]}}>{item.post_status}</Text>
+                <Text
+                  style={{
+                    fontFamily: 'Chewy-Regular',
+                    fontSize: wp('5%'),
+                    color: '#29f',
+                    transform: [
+                      {translateX: -wp('7%')},
+                      {translateY: -wp('5%')},
+                    ],
+                  }}>
+                  {item.post_status}
+                </Text>
               </View>
               <Text style={styles.price}>{item.post_description}</Text>
               <Text style={styles.price}>{item.user_name}</Text>
@@ -144,9 +236,88 @@ export default function PostView({}) {
 }
 
 const styles = StyleSheet.create({
+  container1: {
+    flex: 1,
+  },
+  topLayout: {
+    backgroundColor: '#ff8636',
+    margin: 0,
+  },
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ff8636',
+    margin: 0,
+    marginRight: hp('0.5%'),
+  },
+  topBarInternal: {
+    flex: 2,
+    flexDirection: 'row',
+    paddingLeft: wp('3%'),
+    paddingBottom: wp('2%'),
+  },
+  appNameText: {
+    color: 'white',
+    fontSize: hp('3.5%'),
+    fontFamily: 'Chewy-Regular',
+    paddingLeft: wp('1%'),
+    paddingTop: hp('.5%'),
+  },
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  picture1: {
+    resizeMode: 'cover',
+    width: wp('28%'),
+    height: wp('28%'),
+    borderRadius: wp('8%'),
+    margin: wp('3%'), 
+    alignItems: 'center',
+    justifyContent: 'center' ,
+  },
+  userNameText: {
+    color: 'white',
+    fontSize: hp('3.5%'),
+    fontFamily: 'Chewy-Regular',
+    paddingLeft: wp('2%'),
+  },
+  userInfoText: {
+    color: 'white',
+    fontSize: hp('2%'),
+    fontFamily: 'Chewy-Regular',
+    paddingLeft: wp('2%'),
+  },
+  view1: {
+    flexDirection: 'row',
+    backgroundColor: '#ff8636',
+  },
+  view2: {
+    flex: 1,
+    backgroundColor: '#eeeeee',
+    flexDirection: 'row',
+  },
+  logo: {
+    height: 32,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+  button: {
+    height: 42,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 2,
+    marginTop: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
   container: {
     flex: 1,
-    marginTop: 5,
   },
   view2: {
     paddingHorizontal: 6,
@@ -155,7 +326,7 @@ const styles = StyleSheet.create({
     transform: [{translateY: hp('3%')}],
     flexDirection: 'row',
     flex: 1,
-    backgroundColor:'red'
+    backgroundColor: 'red',
   },
   listItem: {
     aspectRatio: 1.5,
