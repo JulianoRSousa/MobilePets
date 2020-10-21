@@ -15,12 +15,6 @@ import {Settings} from 'react-native';
 
 const AuthStack = createStackNavigator(
   {
-    FirstScreen: {
-      screen: FirstScreen,
-      navigationOptions: {
-        headerTitle: 'Loading',
-      },
-    },
     SignIn: {
       screen: Login,
       navigationOptions: {
@@ -48,6 +42,35 @@ const AuthStack = createStackNavigator(
   },
 );
 
+const LoadingStack = createStackNavigator(
+  {
+    FirstScreen: {
+      screen: FirstScreen,
+      navigationOptions: {
+        headerTitle: 'Loading',
+      },
+    },
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        headerTitle: 'Login',
+      },
+    },
+    Feed: {
+      screen: Feed,
+      navigationOptions: {
+        headerTitle: 'Feed',
+      },
+    },
+  },
+  {
+    headerMode: 'none',
+    navigationOptions: {
+      headerShow: false,
+    },
+  },
+);
+
 const FeedStack = createStackNavigator(
   {
     Feed: {
@@ -60,6 +83,12 @@ const FeedStack = createStackNavigator(
       screen: Example,
       navigationOptions: {
         headerTitle: 'Details',
+      },
+    },
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        headerTitle: 'Login',
       },
     },
   },
@@ -188,7 +217,7 @@ const AppModalStack = createStackNavigator(
 const App = createSwitchNavigator(
   {
     Loading: {
-      screen: AuthStack,
+      screen: LoadingStack,
     },
     Auth: {
       screen: AuthStack,

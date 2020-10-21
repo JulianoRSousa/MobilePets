@@ -23,60 +23,30 @@ export default function PostView({}) {
   const [userInfo, setUserInfo] = useState([]);
 
   useEffect(() => {
-    async function getData() {
-      await api
-        .get('/getFeed', {
-          headers: {
-            token: await AsyncStorage.getItem('token'),
-          },
-        })
-        .then(response => setPostlists(response.data));
-    }
+    getUser();
+    getData();
+  }, []);
 
-    
-    /* async function getData() {
-      const feed = await api.get('/getFeed', {
+  async function getData() {
+    await api
+      .get('/getFeed', {
         headers: {
           token: await AsyncStorage.getItem('token'),
         },
-      });
+      })
+      .then(response => setPostlists(response.data));
+  }
 
-      const data = await Promise.all(feed.data);
-      //   console.log('>>>>>>>>>>> ',data)
-      //setPostlists(data.reduce((obj, item) => ((obj[item._id] = item._id, [item.user] = item.user), obj),{}))
-     
-      var result = {};
-      for(var i = 0; i < data.length; i++) {
-        result[data[i]] = data;
-      }
-      console.log(result)
-    }*/
-    getData();
-    async function getUser() {
-      await api
-        .get('/loadUser', {
-          headers: {
-            token: await AsyncStorage.getItem('token'),
-          },
-        })
-        .then(response => setUserInfo(response.data));
-    }
-    getUser();
-  }, []);
+  async function getUser() {
+    await api
+      .get('/loadUser', {
+        headers: {
+          token: await AsyncStorage.getItem('token'),
+        },
+      })
+      .then(response => setUserInfo(response.data));
 
-  async function logout() {
-    await api.delete('/deleteauth', {
-      headers: {
-        token: await AsyncStorage.getItem('token'),
-      },
-    })
-    await AsyncStorage.setItem('token', '000000000000000000000000');
-    await AsyncStorage.setItem('user', '000000000000000000000000');
-    await AsyncStorage.setItem('email', '000000000000000000000000');
-    await AsyncStorage.setItem('firstName', '000000000000000000000000');
-    await AsyncStorage.setItem('lastName', '000000000000000000000000');
-    await AsyncStorage.setItem('male', true.toString());
-    navigation.navigate('Login');
+      console.log('userInfo.Name >>> ',userInfo.firstName)
   }
 
   function navegador() {
@@ -85,43 +55,33 @@ export default function PostView({}) {
 
   function renderHeader() {
     return (
-    <View>
-    <StatusBar backgroundColor={'#ff8636'} />
+      <View>
+        <StatusBar backgroundColor={'#ff8636'} />
 
-    <View style={styles.topLayout}>
-      <View style={styles.view1} />
-      <View style={styles.topBar}>
-        <TouchableOpacity style={styles.topBarInternal}>
-          <Icon name="paw" size={hp('5%')} color="white" />
-          <Text style={styles.appNameText}>{env.APPNAME}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon
-            name="menu"
-            style={{alignContent: 'flex-end'}}
-            size={hp('5%')}
-            color="white"
-          />
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.userInfo}>
-        <Image
-          style={styles.picture1}
-          source={{
-            uri: userInfo.picture_url,
-          }}
-        />
-        <View>
-          <Text style={styles.userNameText}>{userInfo.firstName}</Text>
-          <Text style={styles.userInfoText}>144 seguidores</Text>
-          <Text style={styles.userInfoText}> 2 Pets</Text>
+        <View style={styles.topLayout}>
+          <View style={styles.view1} />
+
+          <TouchableOpacity style={styles.userInfo}>
+            <Image
+              style={styles.picture1}
+              source={{
+                uri: userInfo.picture_url,
+              }}
+            />
+            <View>
+              <Text style={styles.userNameText}>{userInfo.firstName}</Text>
+              <Text style={styles.userInfoText}>144 seguidores</Text>
+              <Text style={styles.userInfoText}> 2 Pets</Text>
+            </View>
+          </TouchableOpacity>
+          <Button title="Criar um post" onPress={navegador} />
+          <View style={styles.view1} />
         </View>
-      </TouchableOpacity>
-      <Button title="Criar um post" onPress={navegador} />
-      <Button title='LogOut' onPress={logout}/>
-      <View style={styles.view1} />
-    </View></View>)
+      </View>
+    );
   }
+
+  //   POST POST POST POST POST POST POST POST POST POST POST POST POST
 
   return (
     <View style={styles.container}>
@@ -133,28 +93,10 @@ export default function PostView({}) {
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => (
           <View style={styles.container1}>
-            
             <Image style={styles.picture} source={{uri: item.post_picture}} />
             <View style={{flex: 1, height: wp('7%'), translateY: -wp('99%')}}>
               <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{
-                    fontSize: wp('5.5%'),
-                    textAlign: 'left',
-                    textAlignVertical: 'center',
-                    color: 'white',
-                    marginLeft: hp('2%'),
-                    fontFamily: 'Chewy-Regular',
-                    backgroundColor: '#FF8637dd',
-                    alignContent: 'flex-start',
-                    paddingLeft: wp('2%'),
-                    paddingRight: wp('2%'),
-                    borderRadius: wp('3%'),
-                    borderTopLeftRadius: 0,
-                    borderBottomRightRadius: 0,
-                  }}>
-                  {item.pet_name}
-                </Text>
+                <Text style={styles.petName}>{item.pet_name}</Text>
                 <View
                   style={{
                     flex: 1,
@@ -243,38 +185,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff8636',
     margin: 0,
   },
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ff8636',
-    margin: 0,
-    marginRight: hp('0.5%'),
-  },
-  topBarInternal: {
-    flex: 2,
-    flexDirection: 'row',
-    paddingLeft: wp('3%'),
-    paddingBottom: wp('2%'),
-  },
-  appNameText: {
-    color: 'white',
-    fontSize: hp('3.5%'),
-    fontFamily: 'Chewy-Regular',
-    paddingLeft: wp('1%'),
-    paddingTop: hp('.5%'),
-  },
+
   userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   picture1: {
+    borderColor:'#0008',
+    borderWidth:1,
     resizeMode: 'cover',
     width: wp('28%'),
     height: wp('28%'),
     borderRadius: wp('8%'),
-    margin: wp('3%'), 
+    margin: wp('3%'),
     alignItems: 'center',
-    justifyContent: 'center' ,
+    justifyContent: 'center',
   },
   userNameText: {
     color: 'white',
@@ -296,6 +221,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#eeeeee',
     flexDirection: 'row',
+  },
+  petName: {
+    fontSize: wp('5.5%'),
+    textAlign: 'left',
+    textAlignVertical: 'center',
+    color: 'white',
+    marginLeft: hp('2%'),
+    fontFamily: 'Chewy-Regular',
+    backgroundColor: '#FF8637dd',
+    alignContent: 'flex-start',
+    paddingLeft: wp('2%'),
+    paddingRight: wp('2%'),
+    borderRadius: wp('3%'),
+    borderTopLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   logo: {
     height: 32,
