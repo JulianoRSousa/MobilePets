@@ -11,7 +11,9 @@ import CreateAccount from './pages/CreateAccount';
 import ForgotPassword from '../src/pages/ForgotPassword';
 import Feed from '../src/pages/Feed';
 import FirstScreen from '../src/pages/FirstScreen';
-import {Settings} from 'react-native';
+import CreatePost from '../src/pages/CreatePost';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const AuthStack = createStackNavigator(
   {
@@ -19,25 +21,32 @@ const AuthStack = createStackNavigator(
       screen: Login,
       navigationOptions: {
         headerTitle: 'Entrar',
+        headerShown:false
       },
     },
     CreateAccount: {
       screen: CreateAccount,
       navigationOptions: {
-        headerTitle: 'Criar uma conta',
+        headerShown:true,
+        headerStyle: {
+          backgroundColor: '#fa8a41',
+        },
+        headerTintColor: 'white',
+        headerTitleAlign: 'center',
+        headerTitle: 'Criar Conta',
       },
     },
     ForgotPassword: {
       screen: ForgotPassword,
       navigationOptions: {
-        headerTitle: 'Forgot Password',
+        headerShown:true,
+        headerStyle: {
+          backgroundColor: '#fa8a41',
+        },
+        headerTintColor: 'white',
+        headerTitleAlign: 'center',
+        headerTitle: 'Recuperar conta',
       },
-    },
-  },
-  {
-    headerMode: 'none',
-    navigationOptions: {
-      headerShow: false,
     },
   },
 );
@@ -56,12 +65,12 @@ const LoadingStack = createStackNavigator(
         headerTitle: 'Login',
       },
     },
-    Feed: {
-      screen: Feed,
-      navigationOptions: {
-        headerTitle: 'Feed',
-      },
-    },
+    // Feed: {
+    //   screen: Feed,
+    //   navigationOptions: {
+    //     headerTitle: 'Feed',
+    //   },
+    // },
   },
   {
     headerMode: 'none',
@@ -71,34 +80,31 @@ const LoadingStack = createStackNavigator(
   },
 );
 
-const FeedStack = createStackNavigator(
-  {
-    Feed: {
-      screen: Feed,
-      navigationOptions: {
-        headerTitle: 'Feed',
-      },
-    },
-    Details: {
-      screen: Example,
-      navigationOptions: {
-        headerTitle: 'Details',
-      },
-    },
-    Login: {
-      screen: Login,
-      navigationOptions: {
-        headerTitle: 'Login',
-      },
-    },
-  },
-  {
-    headerMode: 'none',
+const FeedStack = createStackNavigator({
+  Feed: {
+    screen: Feed,
     navigationOptions: {
-      headerShow: false,
+      headerShown: false,
     },
   },
-);
+  Details: {
+    screen: Example,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  CreatePost: {
+    screen: CreatePost,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#fa8a41',
+      },
+      headerTintColor: 'white',
+      headerTitleAlign: 'center',
+      headerTitle: 'Criar Post',
+    },
+  },
+});
 
 const SearchStack = createStackNavigator(
   {
@@ -129,7 +135,8 @@ const DiscoverStack = createStackNavigator({
     navigationOptions: {
       headerTitle: 'Discover',
       header: false,
-    }},
+    },
+  },
 });
 
 const MainTabs = createBottomTabNavigator(
@@ -137,23 +144,33 @@ const MainTabs = createBottomTabNavigator(
     Feed: {
       screen: FeedStack,
       navigationOptions: {
+      tabBarIcon: () => <Icon name="newspaper" size={25} color='white' />,
         tabBarLabel: 'Feed',
       },
     },
     Search: {
       screen: SearchStack,
       navigationOptions: {
-        tabBarLabel: 'Search',
+      tabBarIcon: () => <Icon name="magnify" size={25} color='white'/>,
+        tabBarLabel: 'Buscar',
+        
       },
     },
     Discover: {
       screen: DiscoverStack,
       navigationOptions: {
-        tabBarLabel: 'Discover',
+      tabBarIcon: () => <Icon name="account" size={25} color='white'/>,
+        tabBarLabel: 'Meu Perfil',
       },
     },
   },
   {
+    tabBarOptions: {
+      activeBackgroundColor: '#ff8636',
+      inactiveBackgroundColor: '#fa8a41',
+      activeTintColor: 'white',
+      inactiveTintColor: '#fff6',
+    },
     headerMode: 'none',
     navigationOptions: {
       headerShow: false,

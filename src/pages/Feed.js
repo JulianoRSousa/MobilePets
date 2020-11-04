@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, StatusBar, Text} from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as env from '../../dotEnv';
@@ -10,52 +10,74 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import PostView from '../components/PostView';
+import OptionsMenu from 'react-native-option-menu';
 
 export default function Feed({navigation}) {
   async function logOut() {
-    if (
-      (await AsyncStorage.getItem('token')) != '000000000000000000000000' &&
-      (await AsyncStorage.getItem('token')) != null
-    ) {
+    const token = await AsyncStorage.getItem('token');
+    if (token !== null) {
       try {
-        await AsyncStorage.multiSet([
-          ['token', '000000000000000000000000'],
-          ['user', '000000000000000000000000'],
-          ['username', '000000000000000000000000'],
-          ['firstName', '000000000000000000000000'],
-          ['lastName', '000000000000000000000000'],
-          ['male', 'true'],
+        // await AsyncStorage.removeItem('token');
+        // await AsyncStorage.removeItem('username');
+        // await AsyncStorage.removeItem('firstName');
+        // await AsyncStorage.removeItem('lastName');
+        // await AsyncStorage.removeItem('male');
+        // await AsyncStorage.removeItem('picture_url');
+        await AsyncStorage.multiRemove([
+          'token',
+          'username',
+          'firstName',
+          'lastName',
+          'male',
+          'picture_url',
         ]);
-        await api.delete('/deleteauth', {
-          headers: {
-            token: await AsyncStorage.getItem('token'),
+        await api.delete(
+          '/deleteauth',
+          {
+            headers: {token: token},
           },
-        });
-        navigation.navigate('Login');
+          navigation.navigate('Login'),
+        );
       } catch (error) {
-        navigation.navigate('Login')
         console.log('error: ', error.message);
       }
     } else {
       navigation.navigate('Login');
     }
   }
+  const myIcon = (
+    <Icon
+      name="menu"
+      style={{alignContent: 'flex-end'}}
+      size={hp('5%')}
+      color="white"
+    />
+  );
+
+  function navegar(page) {
+    console.log('iniciou navegar to ', page);
+    navigation.navigate(page);
+  }
 
   return (
     <SafeAreaView style={styles.container}>
+    <StatusBar backgroundColor={'#ff8636'} />
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.topBarInternal}>
           <Icon name="paw" size={hp('5%')} color="white" />
+
           <Text style={styles.appNameText}>{env.APPNAME}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={logOut}>
-          <Icon
-            name="menu"
-            style={{alignContent: 'flex-end'}}
-            size={hp('5%')}
-            color="white"
-          />
-        </TouchableOpacity>
+        <OptionsMenu
+          customButton={myIcon}
+          destructiveIndex={1}
+          options={['Criar post', 'Delete', 'Logout', 'Cancel']}
+          actions={[
+            () => navegar('CreatePost'),
+            () => console.log('op2'),
+            logOut,
+          ]}
+        />
       </View>
       <View style={styles.view}>
         <PostView />

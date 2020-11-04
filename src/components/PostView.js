@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Button,
+  Animated,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -16,15 +17,18 @@ import {
 import api from '../services/api';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as env from '../../dotEnv';
+import navigation from '../pages/Feed';
+import ImagePicker from 'react-native-image-picker';
+import OptionsMenu from 'react-native-option-menu';
 
-export default function PostView({}) {
+export default function PostView({navigation}) {
   const [postlists, setPostlists] = useState([]);
   const [userInfo, setUserInfo] = useState([]);
 
   useEffect(() => {
     getUser();
     getData();
+    console.log('está em post View');
   }, []);
 
   async function getData() {
@@ -35,6 +39,7 @@ export default function PostView({}) {
         },
       })
       .then(response => setPostlists(response.data));
+      console.log("data >>>>>> ", postlists);
   }
 
   async function getUser() {
@@ -45,12 +50,10 @@ export default function PostView({}) {
         },
       })
       .then(response => setUserInfo(response.data));
-
-      console.log('userInfo.Name >>> ',userInfo.firstName)
   }
 
-  function navegador() {
-    navigation.navigate('CreatePost');
+  function separator() {
+    return <View style={{height: wp('4%'), backgroundColor: 'red'}} />;
   }
 
   function renderHeader() {
@@ -74,7 +77,6 @@ export default function PostView({}) {
               <Text style={styles.userInfoText}> 2 Pets</Text>
             </View>
           </TouchableOpacity>
-          <Button title="Criar um post" onPress={navegador} />
           <View style={styles.view1} />
         </View>
       </View>
@@ -83,10 +85,30 @@ export default function PostView({}) {
 
   //   POST POST POST POST POST POST POST POST POST POST POST POST POST
 
+  const postOptions = (
+    <Icon
+      name="dots-vertical"
+      style={{
+        alignContent: 'flex-end',
+        backgroundColor: '#0002',
+        borderRadius: wp('4%'),
+        paddingLeft: wp('1%'),
+        paddingRight: wp('1%'),
+      }}
+      size={hp('3%')}
+      color="#000"
+    />
+  );
+
+  function follow(user){
+    console.log('Seguindo ', user);
+  }
+
   return (
-    <View style={styles.container}>
+     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={renderHeader}
+        
         data={postlists}
         vertical
         keyExtractor={post => post.post_id}
@@ -103,17 +125,13 @@ export default function PostView({}) {
                     flexDirection: 'row-reverse',
                     marginStart: wp('1.5%'),
                   }}>
-                  <Icon
-                    name="dots-vertical"
-                    style={{
-                      alignContent: 'flex-end',
-                      backgroundColor: '#0002',
-                      borderRadius: wp('4%'),
-                      paddingLeft: wp('1%'),
-                      paddingRight: wp('1%'),
-                    }}
-                    size={hp('3%')}
-                    color="#000"
+                  <OptionsMenu
+                    customButton={postOptions}
+                    destructiveIndex={1}
+                    options={[('Seguir '+item.user_name),'Denunciar']}
+                    actions={[() => follow(item.user_name),
+                      () => console.log('Denunciar'),
+                    ]}
                   />
                 </View>
               </View>
@@ -167,13 +185,13 @@ export default function PostView({}) {
                   {item.post_status}
                 </Text>
               </View>
-              <Text style={styles.price}>{item.post_description}</Text>
-              <Text style={styles.price}>{item.user_name}</Text>
+              <Text>{item.post_description}</Text>
             </View>
           </View>
         )}
       />
     </View>
+   
   );
 }
 
@@ -184,6 +202,8 @@ const styles = StyleSheet.create({
   topLayout: {
     backgroundColor: '#ff8636',
     margin: 0,
+    borderBottomEndRadius: wp('5%'),
+    borderBottomStartRadius: wp('5%'),
   },
 
   userInfo: {
@@ -191,8 +211,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   picture1: {
-    borderColor:'#0008',
-    borderWidth:1,
+    borderColor: '#0008',
+    borderWidth: 1,
     resizeMode: 'cover',
     width: wp('28%'),
     height: wp('28%'),
@@ -300,9 +320,6 @@ const styles = StyleSheet.create({
     flex: 1,
     transform: [{translateY: -hp('5%')}],
     color: '#e00',
-  },
-  price: {
-    fontSize: 12,
   },
   button: {
     height: 42,

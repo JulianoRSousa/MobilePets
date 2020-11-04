@@ -45,7 +45,9 @@ export default function Login({navigation}) {
               ['username', Res.data.user.username],
               ['firstName', Res.data.user.firstName],
               ['lastName', Res.data.user.lastName],
-              ['male', Res.data.user.male.toString()],]
+              ['male', Res.data.user.male.toString()],
+              ['picture_url', Res.data.user.picture_url],
+            ]
             );
             navigation.navigate('Feed');
           }
