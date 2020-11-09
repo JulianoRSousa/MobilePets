@@ -7,8 +7,6 @@ import {
   Image,
   TouchableOpacity,
   StatusBar,
-  Button,
-  Animated,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -17,8 +15,6 @@ import {
 import api from '../services/api';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
-import navigation from '../pages/Feed';
-import ImagePicker from 'react-native-image-picker';
 import OptionsMenu from 'react-native-option-menu';
 
 export default function PostView({navigation}) {

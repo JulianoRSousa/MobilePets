@@ -12,6 +12,7 @@ import ForgotPassword from '../src/pages/ForgotPassword';
 import Feed from '../src/pages/Feed';
 import FirstScreen from '../src/pages/FirstScreen';
 import CreatePost from '../src/pages/CreatePost';
+import PageCamera from '../src/pages/Camera';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -131,7 +132,7 @@ const SearchStack = createStackNavigator(
 
 const DiscoverStack = createStackNavigator({
   Discover: {
-    screen: Example,
+    screen: PageCamera,
     navigationOptions: {
       headerTitle: 'Discover',
       header: false,

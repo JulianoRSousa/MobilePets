@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Button,
   Picker,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -16,6 +17,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
+import {RNCamera} from 'react-native-camera';
 import api from '../services/api';
 
 export default function CreatePost({navigation}) {
@@ -28,11 +30,23 @@ export default function CreatePost({navigation}) {
   const [male, setMale] = useState(true);
 
   const myIcon = (
-    <Icon name="menu-down" color={'#777'} style={{alignContent: 'flex-end'}} size={hp('5%')} />
+    <Icon
+      name="menu-down"
+      color={'#777'}
+      style={{alignContent: 'flex-end'}}
+      size={hp('5%')}
+    />
   );
-  const opcoes = (
-    ['Pet encontrado', 'Pet Perdido', 'Outro', 'Cancelar']
-  )
+  const opcoes = ['Pet encontrado', 'Pet Perdido', 'Outro', 'Cancelar'];
+
+   async function takePicture() {
+     console.log("iniciou camera")
+    if (camera1) {
+      const options = {quality: 0.5, base64: true};
+      const data = await this.camera.takePictureAsync(options);
+      alert(data.uri);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -55,7 +69,7 @@ export default function CreatePost({navigation}) {
         />
       </View>
       <View>
-      <Text style={styles.label}>Status</Text>
+        <Text style={styles.label}>Status</Text>
         <View style={styles.pickerView}>
           <Text
             style={{
@@ -76,6 +90,22 @@ export default function CreatePost({navigation}) {
               () => {},
             ]}
           />
+          <RNCamera
+            /*ref={camera => { this.camera1 = camera }}*/
+            style={styles.preview}
+            type={RNCamera.Constants.Type.back}
+            autoFocus={RNCamera.Constants.AutoFocus.on}
+            flashMode={RNCamera.Constants.FlashMode.off}
+            permissionDialogTitle={'Permission to use camera'}
+            permissionDialogMessage={
+              'We need your permission to use your camera phone'
+            }
+          />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={takePicture} style={styles.capture}>
+              <Text style={styles.buttonText}> SNAP </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
