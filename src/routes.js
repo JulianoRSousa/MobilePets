@@ -9,6 +9,7 @@ import Login from '../src/pages/Login';
 import Example from '../Example';
 import CreateAccount from './pages/CreateAccount';
 import ForgotPassword from '../src/pages/ForgotPassword';
+import StatusPost from '../src/pages/StatusPost';
 import Feed from '../src/pages/Feed';
 import FirstScreen from '../src/pages/FirstScreen';
 import CreatePost from '../src/pages/CreatePost';
@@ -102,7 +103,7 @@ const FeedStack = createStackNavigator({
       },
       headerTintColor: 'white',
       headerTitleAlign: 'center',
-      headerTitle: 'Criar Post',
+      headerTitle: 'Criar Novo Post',
     },
   },
 });
@@ -110,7 +111,7 @@ const FeedStack = createStackNavigator({
 const SearchStack = createStackNavigator(
   {
     Search: {
-      screen: Example,
+      screen: StatusPost,
       navigationOptions: {
         headerTitle: 'Search',
       },
@@ -134,8 +135,7 @@ const DiscoverStack = createStackNavigator({
   Discover: {
     screen: PageCamera,
     navigationOptions: {
-      headerTitle: 'Discover',
-      header: false,
+      headerShown:false
     },
   },
 });

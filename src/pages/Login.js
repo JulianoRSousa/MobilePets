@@ -14,6 +14,10 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../services/api';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export default function Login({navigation}) {
   const [username, setUsername] = useState('');
@@ -108,6 +112,9 @@ export default function Login({navigation}) {
         translucent={false}
         networkActivityIndicatorVisible={true}
       />
+      <View style={{paddingTop:wp('23%')}}>
+        <Text style={styles.logoText} >Pets</Text>
+      </View>
       <KeyboardAvoidingView behavior="height" style={styles.form}>
         <Text style={styles.label}>Usuário</Text>
         <TextInput
@@ -150,14 +157,20 @@ export default function Login({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#FF8637',
   },
+  logoText: {
+    alignSelf: 'center',
+    fontSize: wp('17%'),
+    paddingBottom: hp('10%'),
+    color: 'white',
+    fontFamily: 'Chewy-Regular',
+  },
   form: {
     alignSelf: 'stretch',
-    paddingHorizontal: 30,
-    marginTop: 30,
+    paddingHorizontal: wp('8%'),
   },
   label: {
     fontWeight: 'bold',

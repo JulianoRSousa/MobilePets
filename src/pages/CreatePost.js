@@ -39,26 +39,17 @@ export default function CreatePost({navigation}) {
   );
   const opcoes = ['Pet encontrado', 'Pet Perdido', 'Outro', 'Cancelar'];
 
-   async function takePicture() {
-     console.log("iniciou camera")
-    if (camera1) {
-      const options = {quality: 0.5, base64: true};
-      const data = await this.camera.takePictureAsync(options);
-      alert(data.uri);
-    }
-  };
 
   return (
     <View style={styles.container}>
       <View>
-        <Text>Titulo</Text>
-        <TextInput placeholder={'Titulo'} style={{backgroundColor: 'white'}} />
+        <Text></Text>
       </View>
       <View>
         <Text style={styles.label}>Descrição</Text>
         <TextInput
           style={styles.input}
-          placeholder="Descrição            "
+          placeholder="Descrição"
           placeholderTextColor="#999"
           keyboardType="default"
           autoCompleteType="email"
@@ -67,46 +58,6 @@ export default function CreatePost({navigation}) {
           value={username}
           onChangeText={setUsername}
         />
-      </View>
-      <View>
-        <Text style={styles.label}>Status</Text>
-        <View style={styles.pickerView}>
-          <Text
-            style={{
-              color: '#999',
-              fontSize: hp('2.3%'),
-              marginBottom: 4,
-            }}>
-            {status}
-          </Text>
-          <OptionsMenu
-            customButton={myIcon}
-            destructiveIndex={1}
-            options={opcoes}
-            actions={[
-              () => setStatus('Encontrado'),
-              () => setStatus('Perdido'),
-              () => setStatus('Outro'),
-              () => {},
-            ]}
-          />
-          <RNCamera
-            /*ref={camera => { this.camera1 = camera }}*/
-            style={styles.preview}
-            type={RNCamera.Constants.Type.back}
-            autoFocus={RNCamera.Constants.AutoFocus.on}
-            flashMode={RNCamera.Constants.FlashMode.off}
-            permissionDialogTitle={'Permission to use camera'}
-            permissionDialogMessage={
-              'We need your permission to use your camera phone'
-            }
-          />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={takePicture} style={styles.capture}>
-              <Text style={styles.buttonText}> SNAP </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </View>
     </View>
   );
@@ -155,26 +106,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: 'white',
   },
-  button: {
-    height: 42,
-    backgroundColor: '#f05a5b',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   text: {
-    fontSize: 30,
-    alignSelf: 'center',
-    color: 'red',
+    alignSelf:'center',
+    fontSize:wp('10%'),
+    paddingVertical:wp('4%'),
+    color:'white',
+    fontFamily:'Chewy-Regular'
   },
-  buttonAccount: {
-    height: 42,
-    backgroundColor: '#226cd4',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
+  button: {
+    borderColor:'white', 
+    justifyContent:'center',
+    backgroundColor:'#fff5',
+    borderWidth:2, 
+    margin:wp('5%'), 
+    borderRadius:wp('6%')
   },
 });
