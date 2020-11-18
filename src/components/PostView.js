@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, props, useEffect} from 'react';
 import {
   View,
   Text,
@@ -35,7 +35,7 @@ export default function PostView({navigation}) {
         },
       })
       .then(response => setPostlists(response.data));
-      console.log("data >>>>>> ", postlists);
+    console.log('data >>>>>> ', postlists);
   }
 
   async function getUser() {
@@ -51,16 +51,17 @@ export default function PostView({navigation}) {
   function separator() {
     return <View style={{height: wp('4%'), backgroundColor: 'red'}} />;
   }
+  
 
   function renderHeader() {
     return (
-      <View>
+      <TouchableOpacity>
         <StatusBar backgroundColor={'#ff8636'} />
 
         <View style={styles.topLayout}>
           <View style={styles.view1} />
 
-          <TouchableOpacity style={styles.userInfo}>
+          <View style={styles.userInfo}>
             <Image
               style={styles.picture1}
               source={{
@@ -70,12 +71,14 @@ export default function PostView({navigation}) {
             <View>
               <Text style={styles.userNameText}>{userInfo.firstName}</Text>
               <Text style={styles.userInfoText}>144 seguidores</Text>
-              <Text style={styles.userInfoText}> 2 Pets</Text>
+              <TouchableOpacity>
+                <Text style={styles.userInfoText}> 2 Pets</Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+          </View>
           <View style={styles.view1} />
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 
@@ -96,15 +99,15 @@ export default function PostView({navigation}) {
     />
   );
 
-  function follow(user){
+  function follow(user) {
     console.log('Seguindo ', user);
   }
 
   return (
-     <View style={styles.container}>
+    <View style={styles.container}>
       <FlatList
+        navigation={navigation}
         ListHeaderComponent={renderHeader}
-        
         data={postlists}
         vertical
         keyExtractor={post => post.post_id}
@@ -124,8 +127,9 @@ export default function PostView({navigation}) {
                   <OptionsMenu
                     customButton={postOptions}
                     destructiveIndex={1}
-                    options={[('Seguir '+item.user_name),'Denunciar']}
-                    actions={[() => follow(item.user_name),
+                    options={['Seguir ' + item.user_name, 'Denunciar']}
+                    actions={[
+                      () => follow(item.user_name),
                       () => console.log('Denunciar'),
                     ]}
                   />
@@ -187,7 +191,6 @@ export default function PostView({navigation}) {
         )}
       />
     </View>
-   
   );
 }
 

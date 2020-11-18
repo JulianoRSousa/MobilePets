@@ -12,6 +12,7 @@ import ForgotPassword from '../src/pages/ForgotPassword';
 import StatusPost from '../src/pages/StatusPost';
 import Feed from '../src/pages/Feed';
 import FirstScreen from '../src/pages/FirstScreen';
+import Pets from '../src/pages/Pets';
 import CreatePost from '../src/pages/CreatePost';
 import PageCamera from '../src/pages/Camera';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -104,6 +105,17 @@ const FeedStack = createStackNavigator({
       headerTintColor: 'white',
       headerTitleAlign: 'center',
       headerTitle: 'Criar Novo Post',
+    },
+  },
+  Pets: {
+    screen: Pets,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#fa8a41',
+      },
+      headerTintColor: 'white',
+      headerTitleAlign: 'center',
+      headerTitle: 'Pets',
     },
   },
 });

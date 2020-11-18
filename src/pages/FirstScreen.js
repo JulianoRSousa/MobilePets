@@ -11,7 +11,7 @@ import api from '../services/api';
 
 export default function FirstScreen({navigation}) {
   useEffect(() => {
-    firstLog();
+    //firstLog();
   });
 
   async function firstLog() {
@@ -64,13 +64,15 @@ export default function FirstScreen({navigation}) {
           paddingTop: hp('10%'),
           color: 'white',
           fontFamily: 'Chewy-Regular',
+          translateY:wp('65%'),
         }}>
         Pets
       </Text>
       <LottieView
-        source={require('../animations/StartLoadingAnimation.json')}
+        source={require('../animations/LoadSymbol.json')}
         autoPlay
         loop
+        speed={1.2}
       />
     </SafeAreaView>
   );
