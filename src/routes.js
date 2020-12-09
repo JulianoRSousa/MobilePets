@@ -15,6 +15,7 @@ import FirstScreen from '../src/pages/FirstScreen';
 import Pets from '../src/pages/Pets';
 import CreatePost from '../src/pages/CreatePost';
 import PageCamera from '../src/pages/Camera';
+import Piker from './pages/PicturePiker';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -145,7 +146,7 @@ const SearchStack = createStackNavigator(
 
 const DiscoverStack = createStackNavigator({
   Discover: {
-    screen: PageCamera,
+    screen: Piker,
     navigationOptions: {
       headerShown:false
     },

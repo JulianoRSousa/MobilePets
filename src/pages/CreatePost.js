@@ -1,14 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import React, {Fragment, Component, useEffect} from 'react';
+import ImagePicker from 'react-native-image-picker';
 import {
-  View,
-  KeyboardAvoidingView,
-  Text,
+  SafeAreaView,
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
+  ScrollView,
+  View,
+  Text,
+  StatusBar,
+  Image,
   Button,
-  Picker,
+  Dimensions,
+  TouchableOpacity,
+  CameraRoll,
 } from 'react-native';
+
+import {
+  Header,
+  LearnMoreLinks,
+  Colors,
+  DebugInstructions,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
+
 import AsyncStorage from '@react-native-community/async-storage';
 import OptionsMenu from 'react-native-option-menu';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,47 +33,66 @@ import {
 import {RNCamera} from 'react-native-camera';
 import api from '../services/api';
 
-export default function CreatePost({navigation}) {
-  var teste = 'nome';
-  const [username, setUsername] = useState(null);
-  const [status, setStatus] = useState('Selecione');
-  const [pass1, setPass1] = useState(null);
-  const [pass2, setPass2] = useState(null);
-  const [fullname, setFullname] = useState(null);
-  const [male, setMale] = useState(true);
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: 1,
+      uri: '',
+      description:''
+    };
+  }
 
-  const myIcon = (
-    <Icon
-      name="menu-down"
-      color={'#777'}
-      style={{alignContent: 'flex-end'}}
-      size={hp('5%')}
-    />
-  );
-  const opcoes = ['Pet encontrado', 'Pet Perdido', 'Outro', 'Cancelar'];
+  renderCamera() {
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'Pets',
+        saveToPhotos: true,
+      },
+    };
 
+    ImagePicker.launchCamera(options, response => {
+      console.log('Response = ', response);
+    });
+  }
 
-  return (
-    <View style={styles.container}>
+  stepOne() {
+    return (
       <View>
-        <Text></Text>
+      <View>
+      <Text style={styles.text} >Adicione uma imagem</Text>
       </View>
       <View>
-        <Text style={styles.label}>Descrição</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Descrição"
-          placeholderTextColor="#999"
-          keyboardType="default"
-          autoCompleteType="email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          value={username}
-          onChangeText={setUsername}
-        />
+
       </View>
-    </View>
-  );
+      </View>
+    );
+  }
+  stepTwo() {
+    return (
+      <View>
+        <Text>StepTwo</Text>
+      </View>
+    );
+  }
+
+  render() {
+    console.log(this.step);
+    if (this.state.step == 1) {
+      return (
+        <View style={styles.container}>
+          <View>{this.stepOne()}</View>
+        </View>
+      );
+    } else if (this.state.step == 2) {
+      return (
+        <View style={styles.container}>
+          <View>{this.stepTwo()}</View>
+        </View>
+      );
+    }
+  }
 }
 
 const styles = StyleSheet.create({
@@ -107,18 +139,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   text: {
-    alignSelf:'center',
-    fontSize:wp('10%'),
-    paddingVertical:wp('4%'),
-    color:'white',
-    fontFamily:'Chewy-Regular'
+    alignSelf: 'center',
+    fontSize: wp('10%'),
+    paddingVertical: wp('4%'),
+    color: 'white',
+    fontFamily: 'Chewy-Regular',
   },
   button: {
-    borderColor:'white', 
-    justifyContent:'center',
-    backgroundColor:'#fff5',
-    borderWidth:2, 
-    margin:wp('5%'), 
-    borderRadius:wp('6%')
+    borderColor: 'white',
+    justifyContent: 'center',
+    backgroundColor: '#fff5',
+    borderWidth: 2,
+    margin: wp('5%'),
+    borderRadius: wp('6%'),
   },
 });
