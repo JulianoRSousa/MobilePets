@@ -30,6 +30,7 @@ const options = {
     path: 'images',
   },
 };
+
 export default class App extends Component {
   constructor(props) {
     super(props)
@@ -54,7 +55,7 @@ export default class App extends Component {
         path: 'images',
       },
     };
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker.launchImageLibrary(options, (response) => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
