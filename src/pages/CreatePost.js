@@ -3,14 +3,14 @@ import ImagePicker from 'react-native-image-picker';
 import {
   StyleSheet,
   View,
-  Text,
   StatusBar,
+  Text,
+  Image,
+  Picker,
   Dimensions,
   TouchableOpacity,
   Alert,
 } from 'react-native';
-
-import { Checkbox } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -20,7 +20,6 @@ import {
 
 import api from '../services/api';
 import AsyncStorage from '@react-native-community/async-storage';
-
 
 export default class App extends Component {
   constructor(props) {
@@ -32,10 +31,16 @@ export default class App extends Component {
       filePath: '',
       fileData: '',
       description: '',
+      status: 1,
     };
   }
 
-
+  nextStep(){
+    this.setState({step: this.state.step+1})
+  }
+  previousStep(){
+    this.setState({step: this.state.step-1})
+  }
   launchCamera = () => {
     let options = {
       storageOptions: {
@@ -94,7 +99,13 @@ export default class App extends Component {
   }
   selectImage() {
     if (this.state.fileData) {
-      this.setState({step: this.state.step + 1});
+      return(
+        
+        <TouchableOpacity onPress={() => this.nextStep()} style={{alignItems:'center', justifyContent:'center'}}>
+        <Text>Proximo</Text>
+              <Icon name={'chevron-right-circle'} size={30} />
+            </TouchableOpacity>
+      )
     } else {
       if (this.state.subStep != 1) {
         return (
@@ -148,14 +159,29 @@ export default class App extends Component {
   }
   stepTwo() {
     return (
-      <View>
-        <Text>Adicione um titulo</Text>
-        <Checkbox
-      status={checked ? 'checked' : 'unchecked'}
-      onPress={() => {
-        setChecked(!checked);
-      }}
-    />
+      <View style={styles.container}>
+        <Text style={styles.text}>Eu:</Text>
+        <View
+          style={{
+            backgroundColor: '#fa8a41',
+            borderWidth: 1.5,
+            borderRadius: 5,
+            borderColor: 'white',
+          }}>
+          <Picker
+            selectedValue={this.state.status}
+            style={styles.picker}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({status: itemValue})
+            }>
+            <Picker.Item label="Encontrei um pet" value={1} />
+            <Picker.Item label="Perdi meu pet" value={2} />
+            <Picker.Item label="Outro" value={3} />
+          </Picker>
+        </View>
+        <TouchableOpacity onPress={() => this.nextStep()} style={styles.button}>
+              <Text style={styles.buttonText}>Continuar</Text>
+            </TouchableOpacity>
       </View>
     );
   }
@@ -176,7 +202,9 @@ export default class App extends Component {
           </View>
         </View>
       );
+    } else if (this.state.step == 3) {
     }
+
   }
 }
 
@@ -184,6 +212,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 2,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#fa8a41',
   },
   viewRow: {
@@ -236,6 +265,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Chewy-Regular',
   },
+  picker: {
+    height: wp('15%'),
+    width: wp('55%'),
+    color: 'white',
+  },
   body: {
     backgroundColor: 'white',
     justifyContent: 'center',
@@ -271,6 +305,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: wp('4.4%'),
     fontWeight: 'bold',
-    color:'white'
+    color: 'white',
   },
 });
