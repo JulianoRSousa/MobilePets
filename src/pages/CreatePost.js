@@ -18,6 +18,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
+
+import LottieView from 'lottie-react-native';
+
 import api from '../services/api';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -93,17 +96,26 @@ export default class App extends Component {
       }
     });
   };
+  
   async sendImage() {
     console.log('enviou');
     this.setState({step: 2});
   }
+
   selectImage() {
-    if (this.state.fileData) {
+    if (!this.state.fileData) {
       return(
         
         <TouchableOpacity onPress={() => this.nextStep()} style={{alignItems:'center', justifyContent:'center'}}>
-        <Text>Proximo</Text>
-              <Icon name={'chevron-right-circle'} size={30} />
+        <Text style={{color:'white'}}>Proximo</Text>
+        <LottieView
+        style={{height:wp('20%'), width:wp('20%'), backgroundColor:'red',  transform: [{ rotate: '135deg'}]}}
+        source={require('../animations/nextArrow.json')}
+        autoPlay
+        loop
+        speed={1.2}
+        resizeMode={'cover'}
+      />
             </TouchableOpacity>
       )
     } else {
@@ -296,7 +308,7 @@ const styles = StyleSheet.create({
     height: wp('18%'),
     borderWidth: 2,
     borderColor: 'white',
-    backgroundColor: '#3B80FF',
+    backgroundColor: '#258DEC',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
