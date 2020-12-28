@@ -24,6 +24,8 @@ import LottieView from 'lottie-react-native';
 import api from '../services/api';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import PetButtons from '../components/Buttons';
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -106,7 +108,7 @@ export default class App extends Component {
     if (!this.state.fileData) {
       return(
         
-        <TouchableOpacity onPress={() => this.nextStep()} style={{alignItems:'center', justifyContent:'center'}}>
+        <TouchableOpacity onPress={() => this.nextStep()} style={styles.nextButton}>
         <Text style={{color:'white'}}>Proximo</Text>
         <LottieView
         style={{height:wp('20%'), width:wp('20%'), backgroundColor:'red',  transform: [{ rotate: '135deg'}]}}
@@ -149,20 +151,10 @@ export default class App extends Component {
         </View>
         <View style={styles.viewRow}>
           <View style={styles.viewContainer}>
-            <TouchableOpacity onPress={this.launchCamera} style={styles.button}>
-              <Text style={styles.buttonText}>Tirar foto</Text>
-              <Icon name={'camera'} color={'white'} size={wp('6%')} />
-            </TouchableOpacity>
+          <PetButtons icon={'camera'} title={'Tirar foto'} onPress={this.launchCamera}></PetButtons>
           </View>
           <View style={styles.viewContainer}>
-            <TouchableOpacity onPress={this.chooseImage} style={styles.button}>
-              <Text style={styles.buttonText}>Escolher Imagem</Text>
-              <Icon
-                name={'folder-multiple-image'}
-                color={'white'}
-                size={wp('6%')}
-              />
-            </TouchableOpacity>
+          <PetButtons icon={'folder-multiple-image'} title={'Escolher Imagem'} onPress={this.chooseImage}></PetButtons>
           </View>
         </View>
         <View style={styles.viewContainer}>{this.selectImage()}</View>
@@ -306,13 +298,22 @@ const styles = StyleSheet.create({
   },
   button: {
     height: wp('18%'),
-    borderWidth: 2,
+    borderWidth: 1.5,
     borderColor: 'white',
     backgroundColor: '#258DEC',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 10,
     marginHorizontal: 5,
+    shadowColor: "rgba(0,0,0,1)",
+    shadowOffset: {
+      width: 3,
+      height: 3
+    },
+    elevation: 6,
+    shadowOpacity: 0.35,
+    shadowRadius: 2,
+    overflow: "visible"
   },
   buttonText: {
     fontSize: wp('4.4%'),
