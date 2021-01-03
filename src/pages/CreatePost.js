@@ -18,13 +18,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-
 import LottieView from 'lottie-react-native';
 
 import api from '../services/api';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import PetButtons from '../components/Buttons';
+import NormalButton from '../components/NormalButtons';
 
 export default class App extends Component {
   constructor(props) {
@@ -40,12 +39,16 @@ export default class App extends Component {
     };
   }
 
-  nextStep(){
-    this.setState({step: this.state.step+1})
+  nextStep() {
+    this.setState({step: this.state.step + 1});
+    console.log('step now: ', this.state.step)
   }
-  previousStep(){
-    this.setState({step: this.state.step-1})
+
+  previousStep() {
+    this.setState({step: this.state.step - 1});
+    console.log('step now: ', this.state.step)
   }
+
   launchCamera = () => {
     let options = {
       storageOptions: {
@@ -98,7 +101,7 @@ export default class App extends Component {
       }
     });
   };
-  
+
   async sendImage() {
     console.log('enviou');
     this.setState({step: 2});
@@ -106,20 +109,7 @@ export default class App extends Component {
 
   selectImage() {
     if (!this.state.fileData) {
-      return(
-        
-        <TouchableOpacity onPress={() => this.nextStep()} style={styles.nextButton}>
-        <Text style={{color:'white'}}>Proximo</Text>
-        <LottieView
-        style={{height:wp('20%'), width:wp('20%'), backgroundColor:'red',  transform: [{ rotate: '135deg'}]}}
-        source={require('../animations/nextArrow.json')}
-        autoPlay
-        loop
-        speed={1.2}
-        resizeMode={'cover'}
-      />
-            </TouchableOpacity>
-      )
+      this.nextStep();
     } else {
       if (this.state.subStep != 1) {
         return (
@@ -151,10 +141,18 @@ export default class App extends Component {
         </View>
         <View style={styles.viewRow}>
           <View style={styles.viewContainer}>
-          <PetButtons icon={'camera'} title={'Tirar foto'} onPress={this.launchCamera}></PetButtons>
+            <NormalButton
+              icon={'camera'}
+              title={'Tirar foto'}
+              onPress={this.launchCamera}
+            />
           </View>
           <View style={styles.viewContainer}>
-          <PetButtons icon={'folder-multiple-image'} title={'Escolher Imagem'} onPress={this.chooseImage}></PetButtons>
+            <NormalButton
+              icon={'folder-multiple-image'}
+              title={'Escolher Imagem'}
+              onPress={this.chooseImage}
+            />
           </View>
         </View>
         <View style={styles.viewContainer}>{this.selectImage()}</View>
@@ -183,9 +181,33 @@ export default class App extends Component {
             <Picker.Item label="Outro" value={3} />
           </Picker>
         </View>
-        <TouchableOpacity onPress={() => this.nextStep()} style={styles.button}>
-              <Text style={styles.buttonText}>Continuar</Text>
-            </TouchableOpacity>
+        <View style={{flexDirection:'row'}}>
+          <TouchableOpacity
+            onPress={() => {this.setState({step: this.state.step - 1}, { fileData: 0});}}
+            style={styles.nextButton}>
+            <LottieView
+              style={{height: wp('20%'), width: wp('20%'),
+              transform: [{ rotate: "90deg" },{translateY:5.5}]}}
+              source={require('../animations/nextArrow.json')}
+              autoPlay
+              loop
+              speed={1.2}
+              resizeMode={'cover'}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {this.nextStep()}}
+            style={styles.nextButton}>
+            <LottieView
+              style={{height: wp('20%'), width: wp('20%')}}
+              source={require('../animations/nextArrow.json')}
+              autoPlay
+              loop
+              speed={1.2}
+              resizeMode={'cover'}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -208,7 +230,6 @@ export default class App extends Component {
       );
     } else if (this.state.step == 3) {
     }
-
   }
 }
 
@@ -305,15 +326,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     marginHorizontal: 5,
-    shadowColor: "rgba(0,0,0,1)",
+    shadowColor: 'rgba(0,0,0,1)',
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 6,
     shadowOpacity: 0.35,
     shadowRadius: 2,
-    overflow: "visible"
+    overflow: 'visible',
   },
   buttonText: {
     fontSize: wp('4.4%'),
