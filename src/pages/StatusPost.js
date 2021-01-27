@@ -21,36 +21,43 @@ import Logo from '../assets/PetsLogo.png';
 import * as env from '../../dotEnv';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 export default function FirstScreen({navigation}) {
   useEffect(() => {});
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require('../assets/images/cardImage6.png')}
-        style={styles.cardItemImagePlace}
-      />
-      <View style={styles.cardBody}>
-        <View style={styles.bodyContent}>
-          <Text style={styles.titleStyle}>Title goes here</Text>
-          <Text style={styles.subtitleStyle}>Subtitle here</Text>
+    <View>
+      <View style={styles.containerCard}>
+        <Image
+          source={require('../assets/images/cardImage6.png')}
+          style={styles.cardItemImagePlaceCard}
+        />
+        <View style={styles.cardBodyCard}>
+          <View style={styles.bodyContentCard}>
+            <Text style={styles.titleStyleCard}>Title goes here</Text>
+            <Text style={styles.subtitleStyleCard}>Subtitle here</Text>
+          </View>
         </View>
-        <View style={styles.actionBody}>
-          <TouchableOpacity style={styles.actionButton1}>
-            <Text style={styles.actionText1}>ACTION 1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton2}>
-            <Text style={styles.actionText2}>ACTION 2</Text>
-          </TouchableOpacity>
-        </View>
+      </View>
+      <View style={styles.actionBodyCard}>
+        <TouchableOpacity style={styles.actionButton1Card}>
+          <Icon  name={'heart'} color={'white'} size={wp('8%')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton1Card}>
+          <Icon name={'comment'} color={'white'} size={wp('8%')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton2Card}>
+          <Icon name={'comment'} color={'white'} size={wp('8%')} />
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height:wp('100%'),
+  containerCard: {
+    height: wp('100%'),
     borderWidth: 1,
     borderRadius: 2,
     borderColor: '#CCC',
@@ -66,54 +73,60 @@ const styles = StyleSheet.create({
     elevation: 3,
     overflow: 'hidden',
   },
-  cardItemImagePlace: {
+  cardItemImagePlaceCard: {
     backgroundColor: '#ccc',
     flex: 1,
-    minHeight: 359,
+    minHeight: wp('100%'),
   },
-  cardBody: {
+  cardBodyCard: {
     position: 'absolute',
     bottom: 0,
     backgroundColor: 'rgba(0,0,0,0.2)',
     left: 0,
     right: 0,
   },
-  bodyContent: {
+  bodyContentCard: {
     padding: 16,
     paddingTop: 24,
     justifyContent: 'center',
   },
-  titleStyle: {
+  titleStyleCard: {
     fontSize: 24,
     color: '#FFF',
     paddingBottom: 12,
   },
-  subtitleStyle: {
+  subtitleStyleCard: {
     fontSize: 14,
     color: '#FFF',
     lineHeight: 16,
     opacity: 0.5,
-    backgroundColor:'#fff7',
-    borderRadius:30
+    backgroundColor: '#fff7',
+    borderRadius: 30,
   },
-  actionBody: {
+  actionBodyCard: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: 'rgba(0,0,0,0.05)',
+    borderBottomWidth: 1,
+    marginHorizontal: 2,
     padding: 8,
     flexDirection: 'row',
   },
-  actionButton1: {
+  actionButton1Card: {
     padding: 8,
     height: 36,
+    justifyContent:'center'
   },
-  actionText1: {
+  actionText1Card: {
     fontSize: 14,
     color: '#FFF',
     opacity: 0.9,
   },
-  actionButton2: {
+  actionButton2Card: {
     padding: 8,
     height: 36,
+    justifyContent:'center',
   },
-  actionText2: {
+  actionTextCard2: {
     fontSize: 14,
     color: '#FFF',
     opacity: 0.9,

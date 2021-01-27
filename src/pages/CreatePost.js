@@ -310,6 +310,28 @@ export default class App extends Component {
 
   StepFour() {
     return (
+      <View style={styles.containerCard}>
+        <Image
+          source={{uri: this.state.uri}}
+          style={styles.cardItemImagePlaceCard}
+        />
+        <View style={styles.cardBodyCard}>
+          <View style={styles.bodyContentCard}>
+            <Text style={styles.titleStyleCard}>Nome_Do_Pet</Text>
+            <Text style={styles.subtitleStyleCard}>{this.state.description}</Text>
+          </View>
+          <View style={styles.actionBodyCard}>
+            <TouchableOpacity style={styles.actionButton1Card}>
+              <Text style={styles.actionText1Card}>ACTION 1</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.actionButton2Card}>
+              <Text style={styles.actionText2Card}>ACTION 2</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+    return (
       <View style={styles.container1Post}>
         <Image style={styles.picturePost} source={{uri: this.state.uri}} />
         <View style={{flex: 1, height: wp('7%'), translateY: -wp('99%')}}>
@@ -650,5 +672,75 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 15,
+  },
+  containerCard: {
+    width:wp('100%'),
+    height:wp('100%'),
+    borderWidth: 1,
+    borderRadius: 2,
+    borderColor: '#CCC',
+    flexWrap: 'nowrap',
+    backgroundColor: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: -2,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.5,
+    elevation: 3,
+    overflow: 'hidden',
+  },
+  cardItemImagePlaceCard: {
+    backgroundColor: '#ccc',
+    flex: 1,
+    minHeight: 359,
+  },
+  cardBodyCard: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    left: 0,
+    right: 0,
+  },
+  bodyContentCard: {
+    padding: 16,
+    paddingTop: 24,
+    justifyContent: 'center',
+  },
+  titleStyleCard: {
+    fontSize: 24,
+    color: '#FFF',
+    paddingBottom: 12,
+  },
+  subtitleStyleCard: {
+    fontSize: 14,
+    color: '#FFF',
+    lineHeight: 16,
+    opacity: 0.5,
+    backgroundColor:'#fff7',
+    borderRadius:30
+  },
+  actionBodyCard: {
+    padding: 8,
+    flexDirection: 'row',
+  },
+  actionButton1Card: {
+    padding: 8,
+    height: 36,
+  },
+  actionText1Card: {
+    fontSize: 14,
+    color: '#FFF',
+    opacity: 0.9,
+  },
+  actionButton2Card: {
+    padding: 8,
+    height: 36,
+  },
+  actionText2Card: {
+    fontSize: 14,
+    color: '#FFF',
+    opacity: 0.9,
   },
 });
