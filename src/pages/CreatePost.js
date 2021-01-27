@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   StatusBar,
+  TextInput,
   Text,
   Image,
   Picker,
@@ -20,9 +21,6 @@ import {
 
 import LottieView from 'lottie-react-native';
 
-import api from '../services/api';
-import AsyncStorage from '@react-native-community/async-storage';
-
 import NormalButton from '../components/NormalButtons';
 
 export default class App extends Component {
@@ -31,22 +29,22 @@ export default class App extends Component {
     this.state = {
       step: 1,
       subStep: 1,
-      uri: '',
-      filePath: '',
-      fileData: '',
-      description: '',
+      uri: null,
+      filePath: null,
+      fileData: null,
+      description: null,
       status: 1,
     };
   }
 
   nextStep() {
+    console.log('nextStep: step before: ', this.state.step);
     this.setState({step: this.state.step + 1});
-    console.log('step now: ', this.state.step)
   }
 
   previousStep() {
-    this.setState({step: this.state.step - 1});
-    console.log('step now: ', this.state.step)
+    if (this.state.step >> 1) this.setState({step: this.state.step - 1});
+    console.log('previousStep: step now: ', this.state.step);
   }
 
   launchCamera = () => {
@@ -108,7 +106,8 @@ export default class App extends Component {
   }
 
   selectImage() {
-    if (!this.state.fileData) {
+    if (this.state.fileData) {
+      console.log('fileData: not null');
       this.nextStep();
     } else {
       if (this.state.subStep != 1) {
@@ -181,13 +180,28 @@ export default class App extends Component {
             <Picker.Item label="Outro" value={3} />
           </Picker>
         </View>
-        <View style={{flexDirection:'row'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: wp('70%'),
+          }}>
           <TouchableOpacity
-            onPress={() => {this.setState({step: this.state.step - 1}, { fileData: 0});}}
+            onPress={() => {
+              this.setState({
+                step: 1,
+                subStep: 1,
+                description: null,
+                status: 1,
+              });
+            }}
             style={styles.nextButton}>
             <LottieView
-              style={{height: wp('20%'), width: wp('20%'),
-              transform: [{ rotate: "90deg" },{translateY:5.5}]}}
+              style={{
+                height: wp('20%'),
+                width: wp('20%'),
+                transform: [{rotate: '90deg'}, {translateY: 5.5}],
+              }}
               source={require('../animations/nextArrow.json')}
               autoPlay
               loop
@@ -196,7 +210,87 @@ export default class App extends Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {this.nextStep()}}
+            onPress={() => {
+              this.nextStep();
+            }}
+            style={styles.nextButton}>
+            <LottieView
+              style={{height: wp('20%'), width: wp('20%')}}
+              source={require('../animations/nextArrow.json')}
+              autoPlay
+              loop
+              speed={1.2}
+              resizeMode={'cover'}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
+  stepThree() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>Adicione uma descrição:</Text>
+        <View
+          style={{
+            backgroundColor: '#fa8a41',
+            borderWidth: 1.5,
+            borderRadius: 5,
+            borderColor: 'white',
+          }}>
+          <TextInput
+            autoCapitalize="sentences"
+            autoFocus={true}
+            maxLength={128}
+            placeholder="Digite uma descrição"
+            textAlignVertical="top"
+            multiline={true}
+            onChangeText={value => this.setState({description: value})}
+            style={{
+              backgroundColor: '#fffd',
+              width: wp('90%'),
+              height: wp('20%'),
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: wp('70%'),
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({
+                step: 2,
+                subStep: 1,
+                description: null,
+                status: 1,
+              });
+            }}
+            style={styles.nextButton}>
+            <LottieView
+              style={{
+                height: wp('20%'),
+                width: wp('20%'),
+                transform: [{rotate: '90deg'}, {translateY: 5.5}],
+              }}
+              source={require('../animations/nextArrow.json')}
+              autoPlay
+              loop
+              speed={1.2}
+              resizeMode={'cover'}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({
+                step: 4,
+                subStep: 1,
+                status: 1,
+              });
+            }}
             style={styles.nextButton}>
             <LottieView
               style={{height: wp('20%'), width: wp('20%')}}
@@ -229,6 +323,7 @@ export default class App extends Component {
         </View>
       );
     } else if (this.state.step == 3) {
+      return <View style={styles.container}>{this.stepThree()}</View>;
     }
   }
 }

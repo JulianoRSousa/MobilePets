@@ -11,7 +11,7 @@ import CreateAccount from './pages/CreateAccount';
 import ForgotPassword from '../src/pages/ForgotPassword';
 import StatusPost from '../src/pages/StatusPost';
 import Feed from '../src/pages/Feed';
-import FirstScreen from '../src/pages/FirstScreen';
+import FirstScreen from '../src/pages/FirstScreen'; 
 import Pets from '../src/pages/Pets';
 import CreatePost from '../src/pages/CreatePost';
 import PageCamera from '../src/pages/Camera';
