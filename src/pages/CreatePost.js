@@ -23,6 +23,8 @@ import LottieView from 'lottie-react-native';
 
 import NormalButton from '../components/NormalButtons';
 
+import OptionsMenu from 'react-native-option-menu';
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -306,6 +308,75 @@ export default class App extends Component {
     );
   }
 
+  StepFour() {
+    return (
+      <View style={styles.container1Post}>
+        <Image style={styles.picturePost} source={{uri: this.state.uri}} />
+        <View style={{flex: 1, height: wp('7%'), translateY: -wp('99%')}}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.petNamePost}>Nome_Do_Pet</Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row-reverse',
+                marginStart: wp('1.5%'),
+              }}
+            />
+          </View>
+        </View>
+
+        <View style={{marginBottom: 30}}>
+          <View
+            style={{
+              borderBottomColor: '#000',
+              borderBottomWidth: 1,
+              borderBottomStartRadius: wp('4%'),
+              borderBottomEndRadius: wp('4%'),
+              alignItems: 'center',
+              flexDirection: 'row',
+              backgroundColor: '#FF863744',
+              transform: [{translateY: -wp('26%')}],
+            }}>
+            <View
+              style={{
+                alignContent: 'center',
+              }}>
+              <Image
+                style={styles.profilePicturePost}
+                source={{uri: this.state.uri}}
+              />
+              <Text
+                style={{
+                  color: 'white',
+                  fontFamily: 'Chewy-Regular',
+                  backgroundColor: '#FF8637dd',
+                  alignContent: 'flex-start',
+                  paddingLeft: wp('2%'),
+                  paddingRight: wp('2%'),
+                  borderRadius: wp('3%'),
+                  borderTopLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+                }}>
+                Nome_Do_Pet
+              </Text>
+              <Text>Descrição:</Text>
+              <Text>{this.state.description}</Text>
+            </View>
+            <Text
+              style={{
+                fontFamily: 'Chewy-Regular',
+                fontSize: wp('5%'),
+                color: '#29f',
+                transform: [{translateX: -wp('7%')}, {translateY: -wp('5%')}],
+              }}>
+              Status: {this.state.status}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   render() {
     if (this.state.step == 1) {
       return (
@@ -324,6 +395,12 @@ export default class App extends Component {
       );
     } else if (this.state.step == 3) {
       return <View style={styles.container}>{this.stepThree()}</View>;
+    } else if (this.state.step == 4) {
+      return (
+        <View style={styles.container}>
+          <View>{this.StepFour()}</View>
+        </View>
+      );
     }
   }
 }
@@ -435,5 +512,143 @@ const styles = StyleSheet.create({
     fontSize: wp('4.4%'),
     fontWeight: 'bold',
     color: 'white',
+  },
+  container1Post: {
+    flex: 1,
+  },
+  topLayoutPost: {
+    backgroundColor: '#ff8636',
+    margin: 0,
+    borderBottomEndRadius: wp('5%'),
+    borderBottomStartRadius: wp('5%'),
+  },
+
+  userInfoPost: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  picture1Post: {
+    borderColor: '#0008',
+    borderWidth: 1,
+    resizeMode: 'cover',
+    width: wp('28%'),
+    height: wp('28%'),
+    borderRadius: wp('8%'),
+    margin: wp('3%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  userNameTextPost: {
+    color: 'white',
+    fontSize: hp('3.5%'),
+    fontFamily: 'Chewy-Regular',
+    paddingLeft: wp('2%'),
+  },
+  userInfoTextPost: {
+    color: 'white',
+    fontSize: hp('2%'),
+    fontFamily: 'Chewy-Regular',
+    paddingLeft: wp('2%'),
+  },
+  view1Post: {
+    flexDirection: 'row',
+    backgroundColor: '#ff8636',
+  },
+  view2Post: {
+    flex: 1,
+    backgroundColor: '#eeeeee',
+    flexDirection: 'row',
+  },
+  petNamePost: {
+    fontSize: wp('5.5%'),
+    textAlign: 'left',
+    textAlignVertical: 'center',
+    color: 'white',
+    marginLeft: hp('2%'),
+    fontFamily: 'Chewy-Regular',
+    backgroundColor: '#FF8637dd',
+    alignContent: 'flex-start',
+    paddingLeft: wp('2%'),
+    paddingRight: wp('2%'),
+    borderRadius: wp('3%'),
+    borderTopLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  logoPost: {
+    height: 32,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+  buttonPost: {
+    height: 42,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 2,
+    marginTop: 15,
+  },
+  buttonTextPost: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  containerPost: {
+    flex: 1,
+  },
+  view2Post: {
+    paddingHorizontal: 6,
+    alignContent: 'flex-end',
+    justifyContent: 'flex-end',
+    transform: [{translateY: hp('3%')}],
+    flexDirection: 'row',
+    flex: 1,
+    backgroundColor: 'red',
+  },
+  listItemPost: {
+    aspectRatio: 1.5,
+    flexDirection: 'row',
+    marginBottom: 5,
+    padding: 2,
+    borderColor: '#444',
+    borderWidth: 1,
+    borderRadius: 2,
+  },
+  profilePicturePost: {
+    width: wp('13%'),
+    height: hp('7%'),
+    backgroundColor: 'green',
+    borderWidth: 2,
+    borderColor: 'red',
+    borderRadius: hp('100%'),
+    marginLeft: wp('5%'),
+  },
+  picturePost: {
+    width: wp('100%'),
+    height: wp('100%'),
+    resizeMode: 'cover',
+    overflow: 'hidden',
+    borderRadius: wp('4%'),
+  },
+  textStatusPost: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    flex: 1,
+    transform: [{translateY: -hp('5%')}],
+    color: '#e00',
+  },
+  buttonPost: {
+    height: 42,
+    backgroundColor: '#f05a5b',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 2,
+    marginTop: 15,
+  },
+  buttonTextPost: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 15,
   },
 });
