@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import ImagePicker from 'react-native-image-picker';
 import {
   StyleSheet,
@@ -22,8 +22,11 @@ import {
 import LottieView from 'lottie-react-native';
 
 import NormalButton from '../components/NormalButtons';
+import UserLogo from '../components/UserLogo';
+import StatusLogo from '../components/StatusLogo';
 
 import OptionsMenu from 'react-native-option-menu';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class App extends Component {
   constructor(props) {
@@ -36,7 +39,11 @@ export default class App extends Component {
       fileData: null,
       description: null,
       status: 1,
+      userInfo: null
     };
+  }
+  componentDidMount(){
+    this.loadUser()
   }
 
   nextStep() {
@@ -105,6 +112,12 @@ export default class App extends Component {
   async sendImage() {
     console.log('enviou');
     this.setState({step: 2});
+  }
+
+  async loadUser() {
+   var userInfo = await AsyncStorage.getItem('firstName');
+    userInfo = (userInfo + ' ' + (await AsyncStorage.getItem('lastName')))+''
+    this.setState({userInfo: userInfo})
   }
 
   selectImage() {
@@ -290,7 +303,6 @@ export default class App extends Component {
               this.setState({
                 step: 4,
                 subStep: 1,
-                status: 1,
               });
             }}
             style={styles.nextButton}>
@@ -309,94 +321,51 @@ export default class App extends Component {
   }
 
   StepFour() {
-    return (
-      <View style={styles.containerCard}>
-        <Image
-          source={{uri: this.state.uri}}
-          style={styles.cardItemImagePlaceCard}
-        />
-        <View style={styles.cardBodyCard}>
-          <View style={styles.bodyContentCard}>
-            <Text style={styles.titleStyleCard}>Nome_Do_Pet</Text>
-            <Text style={styles.subtitleStyleCard}>{this.state.description}</Text>
+    if (this.state.status == 2) {
+      return (
+        <View style={styles.containerCard}>
+          <View>
+            <Text>Escolha o pet</Text>
           </View>
-          <View style={styles.actionBodyCard}>
-            <TouchableOpacity style={styles.actionButton1Card}>
-              <Text style={styles.actionText1Card}>ACTION 1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton2Card}>
-              <Text style={styles.actionText2Card}>ACTION 2</Text>
-            </TouchableOpacity>
+          <View>
+            <Text>Meu pet não está listado</Text>
           </View>
         </View>
-      </View>
-    );
-    return (
-      <View style={styles.container1Post}>
-        <Image style={styles.picturePost} source={{uri: this.state.uri}} />
-        <View style={{flex: 1, height: wp('7%'), translateY: -wp('99%')}}>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={styles.petNamePost}>Nome_Do_Pet</Text>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row-reverse',
-                marginStart: wp('1.5%'),
-              }}
-            />
-          </View>
-        </View>
-
-        <View style={{marginBottom: 30}}>
-          <View
-            style={{
-              borderBottomColor: '#000',
-              borderBottomWidth: 1,
-              borderBottomStartRadius: wp('4%'),
-              borderBottomEndRadius: wp('4%'),
-              alignItems: 'center',
-              flexDirection: 'row',
-              backgroundColor: '#FF863744',
-              transform: [{translateY: -wp('26%')}],
-            }}>
-            <View
-              style={{
-                alignContent: 'center',
-              }}>
-              <Image
-                style={styles.profilePicturePost}
-                source={{uri: this.state.uri}}
-              />
-              <Text
-                style={{
-                  color: 'white',
-                  fontFamily: 'Chewy-Regular',
-                  backgroundColor: '#FF8637dd',
-                  alignContent: 'flex-start',
-                  paddingLeft: wp('2%'),
-                  paddingRight: wp('2%'),
-                  borderRadius: wp('3%'),
-                  borderTopLeftRadius: 0,
-                  borderBottomRightRadius: 0,
-                }}>
-                Nome_Do_Pet
+      );
+    } else {
+      return (
+        <View style={styles.containerCard}>
+          <Image
+            source={{uri: this.state.uri}}
+            style={styles.cardItemImagePlaceCard}
+          />
+          <View style={styles.cardBodyCard}>
+            <View style={styles.bodyContentCard}>
+              <Text style={styles.subtitleStyleCard}>
+                {this.state.description}
               </Text>
-              <Text>Descrição:</Text>
-              <Text>{this.state.description}</Text>
             </View>
-            <Text
-              style={{
-                fontFamily: 'Chewy-Regular',
-                fontSize: wp('5%'),
-                color: '#29f',
-                transform: [{translateX: -wp('7%')}, {translateY: -wp('5%')}],
-              }}>
-              Status: {this.state.status}
-            </Text>
+            <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+              <View style={styles.InternBodyCard}>
+                <TouchableOpacity style={styles.actionButton1Card}>
+                  <Icon name={'heart'} color={'white'} size={wp('8%')} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.actionButton1Card}>
+                  <Icon name={'comment'} color={'white'} size={wp('8%')} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.InternTextCard}>
+                <StatusLogo status={this.state.status} />
+              </View>
+              <View style={styles.InternTextCard}>
+                <UserLogo title={this.state.userInfo} onPress={console.log('onpress')} source={this.state.uri}/>
+              </View>
+            </View>
           </View>
         </View>
-      </View>
-    );
+      );
+    }
+    
   }
 
   render() {
@@ -421,6 +390,38 @@ export default class App extends Component {
       return (
         <View style={styles.container}>
           <View>{this.StepFour()}</View>
+          <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: wp('70%'),
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({
+                step: 3,
+              });
+            }}
+            style={styles.nextButton}>
+            <LottieView
+              style={{
+                height: wp('20%'),
+                width: wp('20%'),
+                transform: [{rotate: '90deg'}, {translateY: 5.5}],
+              }}
+              source={require('../animations/nextArrow.json')}
+              autoPlay
+              loop
+              speed={1.2}
+              resizeMode={'cover'}
+            />
+          </TouchableOpacity>
+          <NormalButton
+            icon={'upload-outline'}
+              title={'Postar'}
+              onPress={console.log(this.state)}
+          />
+        </View>
         </View>
       );
     }
@@ -465,6 +466,33 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  InternBodyCard: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: 'rgba(0,0,0,0.05)',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    width: wp('33%'),
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  InternTextCard: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: 'rgba(0,0,0,0.05)',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    width: wp('33%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profilePicture: {
+    width: wp('13%'),
+    height: hp('7%'),
+    backgroundColor: 'green',
+    borderWidth: 2,
+    borderColor: 'red',
+    borderRadius: hp('100%'),
+    marginLeft: wp('5%'),
   },
   input: {
     borderWidth: 1,
@@ -674,8 +702,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   containerCard: {
-    width:wp('100%'),
-    height:wp('100%'),
+    width: wp('100%'),
+    height: wp('100%'),
     borderWidth: 1,
     borderRadius: 2,
     borderColor: '#CCC',
@@ -718,8 +746,8 @@ const styles = StyleSheet.create({
     color: '#FFF',
     lineHeight: 16,
     opacity: 0.5,
-    backgroundColor:'#fff7',
-    borderRadius:30
+    backgroundColor: '#fff7',
+    borderRadius: 30,
   },
   actionBodyCard: {
     padding: 8,

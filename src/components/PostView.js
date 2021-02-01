@@ -35,7 +35,6 @@ export default function PostView({navigation}) {
         },
       })
       .then(response => setPostlists(response.data));
-    console.log('data >>>>>> ', postlists);
   }
 
   async function getUser() {

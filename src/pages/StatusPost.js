@@ -36,20 +36,28 @@ export default function FirstScreen({navigation}) {
         <View style={styles.cardBodyCard}>
           <View style={styles.bodyContentCard}>
             <Text style={styles.titleStyleCard}>Title goes here</Text>
-            <Text style={styles.subtitleStyleCard}>Subtitle here</Text>
+            <Text style={styles.subtitleStyleCard}>Subtitle here aspdkfpoak aposdkf poaskd ak aok dfk aop kasodkfoask </Text>
           </View>
         </View>
       </View>
-      <View style={styles.actionBodyCard}>
-        <TouchableOpacity style={styles.actionButton1Card}>
-          <Icon  name={'heart'} color={'white'} size={wp('8%')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton1Card}>
-          <Icon name={'comment'} color={'white'} size={wp('8%')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton2Card}>
-          <Icon name={'comment'} color={'white'} size={wp('8%')} />
-        </TouchableOpacity>
+      <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+        <View style={styles.InternBodyCard}>
+          <TouchableOpacity style={styles.actionButton1Card}>
+            <Icon name={'heart'} color={'white'} size={wp('8%')} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton1Card}>
+            <Icon name={'comment'} color={'white'} size={wp('8%')} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.InternTextCard}>
+          <Text style={{color:'red'}}>Perdido</Text>
+        </View>
+        <View style={styles.InternBodyCard}>
+          <TouchableOpacity style={styles.actionButton2Card}>
+            <Icon name={'shape-circle-plus'} color={'white'} size={wp('8%')} />
+          </TouchableOpacity>
+          <Text style={{color:'white'}}>Juliano</Text>
+        </View>
       </View>
     </View>
   );
@@ -101,7 +109,6 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     opacity: 0.5,
     backgroundColor: '#fff7',
-    borderRadius: 30,
   },
   actionBodyCard: {
     backgroundColor: 'rgba(0,0,0,0.1)',
@@ -111,10 +118,26 @@ const styles = StyleSheet.create({
     padding: 8,
     flexDirection: 'row',
   },
+  InternBodyCard: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: 'rgba(0,0,0,0.05)',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    width: wp('33%'),
+  },
+  InternTextCard: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: 'rgba(0,0,0,0.05)',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    width: wp('33%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   actionButton1Card: {
     padding: 8,
     height: 36,
-    justifyContent:'center'
+    justifyContent: 'center',
   },
   actionText1Card: {
     fontSize: 14,
@@ -124,7 +147,7 @@ const styles = StyleSheet.create({
   actionButton2Card: {
     padding: 8,
     height: 36,
-    justifyContent:'center',
+    justifyContent: 'center',
   },
   actionTextCard2: {
     fontSize: 14,
