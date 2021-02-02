@@ -56,7 +56,7 @@ export default function FirstScreen({navigation}) {
           <TouchableOpacity style={styles.actionButton2Card}>
             <Icon name={'shape-circle-plus'} color={'white'} size={wp('8%')} />
           </TouchableOpacity>
-          <Text style={{color:'white'}}>Juliano</Text>
+          <Text style={{color:'white'}}>{userInfo.firstName}</Text>
         </View>
       </View>
     </View>

@@ -20,13 +20,14 @@ import {
 } from 'react-native-responsive-screen';
 
 import LottieView from 'lottie-react-native';
+import PetLogo from '../components/PetLogo';
+import api from '../services/api';
 
 import NormalButton from '../components/NormalButtons';
 import UserLogo from '../components/UserLogo';
 import StatusLogo from '../components/StatusLogo';
-
-import OptionsMenu from 'react-native-option-menu';
 import AsyncStorage from '@react-native-community/async-storage';
+import FormData from 'form-data';
 
 export default class App extends Component {
   constructor(props) {
@@ -39,11 +40,12 @@ export default class App extends Component {
       fileData: null,
       description: null,
       status: 1,
-      userInfo: null
+      userInfo: null,
+      petInfo: [],
     };
   }
-  componentDidMount(){
-    this.loadUser()
+  componentDidMount() {
+    this.loadUser();
   }
 
   nextStep() {
@@ -115,9 +117,38 @@ export default class App extends Component {
   }
 
   async loadUser() {
-   var userInfo = await AsyncStorage.getItem('firstName');
-    userInfo = (userInfo + ' ' + (await AsyncStorage.getItem('lastName')))+''
-    this.setState({userInfo: userInfo})
+    var userInfo = await AsyncStorage.getItem('firstName');
+    this.setState({userInfo: userInfo});
+  }
+
+  async loadPets() {}
+
+  async createPost() {
+    console.log('filePATH>>>>>> ', this.state.filePath);
+
+    const picture= new FormData();
+
+    picture.append('file', {
+      name: this.state.filePath.fileName,
+      type: this.state.filePath.type,
+      uri: 'file:/' +  this.state.filePath.uri
+    });
+
+    await api
+      .post(
+        '/createPost',
+        {},
+        {
+          data: {picture: picture, state: this.state.status, description: this.state.description},
+          headers: {
+            pet_id: '6019c07aa2fe3e001707508c',
+            token: await AsyncStorage.getItem('token'),
+          },
+        },
+      )
+      .then(() => console.log('Upload pressed3'));
+
+    console.log('Upload pressed4');
   }
 
   selectImage() {
@@ -327,9 +358,7 @@ export default class App extends Component {
           <View>
             <Text>Escolha o pet</Text>
           </View>
-          <View>
-            <Text>Meu pet não está listado</Text>
-          </View>
+          <View>{loadPets}</View>
         </View>
       );
     } else {
@@ -339,12 +368,18 @@ export default class App extends Component {
             source={{uri: this.state.uri}}
             style={styles.cardItemImagePlaceCard}
           />
+          <PetLogo
+            onPress={() => console.log('Pet Name: ')}
+            petName={this.state.petInfo}
+            style={styles.PetName}
+          />
+          <View style={styles.ViewContentDescription}>
+            <Text style={styles.subtitleStyleCard}>
+              {this.state.description}
+            </Text>
+          </View>
+
           <View style={styles.cardBodyCard}>
-            <View style={styles.bodyContentCard}>
-              <Text style={styles.subtitleStyleCard}>
-                {this.state.description}
-              </Text>
-            </View>
             <View style={{alignSelf: 'center', flexDirection: 'row'}}>
               <View style={styles.InternBodyCard}>
                 <TouchableOpacity style={styles.actionButton1Card}>
@@ -358,14 +393,19 @@ export default class App extends Component {
                 <StatusLogo status={this.state.status} />
               </View>
               <View style={styles.InternTextCard}>
-                <UserLogo title={this.state.userInfo} onPress={console.log('onpress')} source={this.state.uri}/>
+                <UserLogo
+                  title={this.state.userInfo}
+                  onPress={() => {
+                    console.log('onpress');
+                  }}
+                  source={this.state.uri}
+                />
               </View>
             </View>
           </View>
         </View>
       );
     }
-    
   }
 
   render() {
@@ -379,9 +419,6 @@ export default class App extends Component {
       return (
         <View style={styles.container}>
           <View>{this.stepTwo()}</View>
-          <View>
-            <Text>{this.state.uri}</Text>
-          </View>
         </View>
       );
     } else if (this.state.step == 3) {
@@ -391,37 +428,37 @@ export default class App extends Component {
         <View style={styles.container}>
           <View>{this.StepFour()}</View>
           <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: wp('70%'),
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({
-                step: 3,
-              });
-            }}
-            style={styles.nextButton}>
-            <LottieView
-              style={{
-                height: wp('20%'),
-                width: wp('20%'),
-                transform: [{rotate: '90deg'}, {translateY: 5.5}],
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: wp('70%'),
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({
+                  step: 3,
+                });
               }}
-              source={require('../animations/nextArrow.json')}
-              autoPlay
-              loop
-              speed={1.2}
-              resizeMode={'cover'}
-            />
-          </TouchableOpacity>
-          <NormalButton
-            icon={'upload-outline'}
+              style={styles.nextButton}>
+              <LottieView
+                style={{
+                  height: wp('20%'),
+                  width: wp('20%'),
+                  transform: [{rotate: '90deg'}, {translateY: 5.5}],
+                }}
+                source={require('../animations/nextArrow.json')}
+                autoPlay
+                loop
+                speed={1.2}
+                resizeMode={'cover'}
+              />
+            </TouchableOpacity>
+            <NormalButton
+              icon={'upload-outline'}
               title={'Postar'}
-              onPress={console.log(this.state)}
-          />
-        </View>
+              onPress={this.createPost.bind(this)}
+            />
+          </View>
         </View>
       );
     }
@@ -448,6 +485,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     marginTop: 30,
   },
+  PetName: {
+    backgroundColor: '#0003',
+    position: 'absolute',
+    top: wp('76%'),
+  },
   label: {
     fontWeight: 'bold',
     color: 'white',
@@ -473,8 +515,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     flexDirection: 'row',
     width: wp('33%'),
-    justifyContent:'center',
-    alignItems:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   InternTextCard: {
     backgroundColor: 'rgba(0,0,0,0.1)',
@@ -703,7 +745,7 @@ const styles = StyleSheet.create({
   },
   containerCard: {
     width: wp('100%'),
-    height: wp('100%'),
+    height: wp('120%'),
     borderWidth: 1,
     borderRadius: 2,
     borderColor: '#CCC',
@@ -721,15 +763,16 @@ const styles = StyleSheet.create({
   },
   cardItemImagePlaceCard: {
     backgroundColor: '#ccc',
-    flex: 1,
-    minHeight: 359,
+    width: wp('100%'),
+    height: wp('100%'),
   },
   cardBodyCard: {
     position: 'absolute',
-    bottom: 0,
+    top: wp('86%'),
     backgroundColor: 'rgba(0,0,0,0.2)',
     left: 0,
     right: 0,
+    height: wp('14%'),
   },
   bodyContentCard: {
     padding: 16,
@@ -743,10 +786,9 @@ const styles = StyleSheet.create({
   },
   subtitleStyleCard: {
     fontSize: 14,
-    color: '#FFF',
+    color: '#000',
     lineHeight: 16,
     opacity: 0.5,
-    backgroundColor: '#fff7',
     borderRadius: 30,
   },
   actionBodyCard: {
@@ -770,5 +812,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#FFF',
     opacity: 0.9,
+  },
+  ViewContentDescription: {
+    backgroundColor: '#ddd2',
+    position: 'absolute',
+    top: wp('100%'),
   },
 });

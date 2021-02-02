@@ -16,6 +16,9 @@ import api from '../services/api';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 import OptionsMenu from 'react-native-option-menu';
+import StatusLogo from '../components/StatusLogo';
+import UserLogo from '../components/UserLogo';
+import PetLogo from '../components/PetLogo';
 
 export default function PostView({navigation}) {
   const [postlists, setPostlists] = useState([]);
@@ -24,7 +27,7 @@ export default function PostView({navigation}) {
   useEffect(() => {
     getUser();
     getData();
-    console.log('está em post View');
+    console.log(postlists);
   }, []);
 
   async function getData() {
@@ -45,12 +48,12 @@ export default function PostView({navigation}) {
         },
       })
       .then(response => setUserInfo(response.data));
+    await AsyncStorage.setItem();
   }
 
   function separator() {
-    return <View style={{height: wp('4%'), backgroundColor: 'red'}} />;
+    return <View style={{height: wp('2%'), backgroundColor: '#fff6'}} />;
   }
-  
 
   function renderHeader() {
     return (
@@ -88,10 +91,10 @@ export default function PostView({navigation}) {
       name="dots-vertical"
       style={{
         alignContent: 'flex-end',
-        backgroundColor: '#0002',
-        borderRadius: wp('4%'),
-        paddingLeft: wp('1%'),
-        paddingRight: wp('1%'),
+        backgroundColor: '#0001',
+        paddingLeft: wp('2%'),
+        paddingBottom: wp('2%'),
+        borderBottomLeftRadius: wp('8%'),
       }}
       size={hp('3%')}
       color="#000"
@@ -109,82 +112,69 @@ export default function PostView({navigation}) {
         ListHeaderComponent={renderHeader}
         data={postlists}
         vertical
+        ItemSeparatorComponent={separator}
         keyExtractor={post => post.post_id}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => (
-          <View style={styles.container1}>
-            <Image style={styles.picture} source={{uri: item.post_picture}} />
-            <View style={{flex: 1, height: wp('7%'), translateY: -wp('99%')}}>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={styles.petName}>{item.pet_name}</Text>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row-reverse',
-                    marginStart: wp('1.5%'),
-                  }}>
-                  <OptionsMenu
-                    customButton={postOptions}
-                    destructiveIndex={1}
-                    options={['Seguir ' + item.user_name, 'Denunciar']}
-                    actions={[
-                      () => follow(item.user_name),
-                      () => console.log('Denunciar'),
-                    ]}
-                  />
-                </View>
-              </View>
+          <View style={styles.containerCard}>
+            <Image
+              source={{uri: item.post_picture}}
+              style={styles.cardItemImagePlaceCard}
+            />
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row-reverse',
+                marginStart: wp('1.5%'),
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                borderRadius: 0,
+              }}>
+              <OptionsMenu
+                customButton={postOptions}
+                destructiveIndex={1}
+                options={['Seguir ' + item.user_name, 'Denunciar']}
+                actions={[
+                  () => follow(item.user_name),
+                  () => console.log('Denunciar'),
+                ]}
+              />
+            </View>
+            <PetLogo
+              onPress={() => console.log('Pet Name: ', item.pet_name)}
+              petName={item.pet_name}
+              style={styles.PetName}
+            />
+            <View style={styles.ViewContentDescription}>
+              <Text style={styles.subtitleStyleCard}>
+                {item.post_description}
+              </Text>
             </View>
 
-            <View style={{marginBottom: 30}}>
-              <View
-                style={{
-                  borderBottomColor: '#000',
-                  borderBottomWidth: 1,
-                  borderBottomStartRadius: wp('4%'),
-                  borderBottomEndRadius: wp('4%'),
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  backgroundColor: '#FF863744',
-                  transform: [{translateY: -wp('26%')}],
-                }}>
-                <View
-                  style={{
-                    alignContent: 'center',
-                  }}>
-                  <Image
-                    style={styles.profilePicture}
-                    source={{uri: item.user_picture}}
-                  />
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontFamily: 'Chewy-Regular',
-                      backgroundColor: '#FF8637dd',
-                      alignContent: 'flex-start',
-                      paddingLeft: wp('2%'),
-                      paddingRight: wp('2%'),
-                      borderRadius: wp('3%'),
-                      borderTopLeftRadius: 0,
-                      borderBottomRightRadius: 0,
-                    }}>
-                    {item.user_name}
-                  </Text>
+            <View style={styles.cardBodyCard}>
+              <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+                <View style={styles.InternBodyCard}>
+                  <TouchableOpacity style={styles.actionButton1Card}>
+                    <Icon name={'heart'} color={'white'} size={wp('8%')} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.actionButton1Card}>
+                    <Icon name={'comment'} color={'white'} size={wp('8%')} />
+                  </TouchableOpacity>
                 </View>
-                <Text
-                  style={{
-                    fontFamily: 'Chewy-Regular',
-                    fontSize: wp('5%'),
-                    color: '#29f',
-                    transform: [
-                      {translateX: -wp('7%')},
-                      {translateY: -wp('5%')},
-                    ],
-                  }}>
-                  {item.post_status}
-                </Text>
+                <View style={styles.InternTextCard}>
+                  <StatusLogo status={item.post_status} />
+                </View>
+                <View style={styles.InternTextCard}>
+                  <UserLogo
+                    title={item.user_name}
+                    onPress={() => {
+                      console.log('onpress');
+                    }}
+                    source={item.user_picture}
+                  />
+                </View>
               </View>
-              <Text>{item.post_description}</Text>
             </View>
           </View>
         )}
@@ -197,11 +187,19 @@ const styles = StyleSheet.create({
   container1: {
     flex: 1,
   },
+  ViewContentDescription: {
+    backgroundColor: '#ddd2',
+    position: 'absolute',
+    top: wp('100%'),
+  },
+  PetName: {
+    backgroundColor: '#0003',
+    position: 'absolute',
+    top: wp('76%'),
+  },
   topLayout: {
     backgroundColor: '#ff8636',
-    margin: 0,
-    borderBottomEndRadius: wp('5%'),
-    borderBottomStartRadius: wp('5%'),
+    paddingBottom: 10,
   },
 
   userInfo: {
@@ -331,5 +329,93 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 15,
+  },
+  InternBodyCard: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: 'rgba(0,0,0,0.05)',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    width: wp('33%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  InternTextCard: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: 'rgba(0,0,0,0.05)',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    width: wp('33%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  containerCard: {
+    width: wp('100%'),
+    height: wp('120%'),
+    borderWidth: 1,
+    borderRadius: 2,
+    borderColor: '#CCC',
+    flexWrap: 'nowrap',
+    backgroundColor: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: -2,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.5,
+    elevation: 3,
+    overflow: 'hidden',
+  },
+  cardItemImagePlaceCard: {
+    backgroundColor: '#ccc',
+    width: wp('100%'),
+    height: wp('100%'),
+  },
+  cardBodyCard: {
+    position: 'absolute',
+    top: wp('86%'),
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    left: 0,
+    right: 0,
+    height: wp('14%'),
+  },
+  bodyContentCard: {
+    padding: 16,
+    paddingTop: 24,
+    justifyContent: 'center',
+  },
+  titleStyleCard: {
+    fontSize: 24,
+    color: '#FFF',
+    paddingBottom: 12,
+  },
+  subtitleStyleCard: {
+    fontSize: 14,
+    color: '#000',
+    lineHeight: 16,
+    opacity: 0.5,
+    borderRadius: 30,
+  },
+  actionBodyCard: {
+    padding: 8,
+    flexDirection: 'row',
+  },
+  actionButton1Card: {
+    padding: 8,
+    height: 36,
+  },
+  actionText1Card: {
+    fontSize: 14,
+    color: '#FFF',
+    opacity: 0.9,
+  },
+  actionButton2Card: {
+    padding: 8,
+    height: 36,
+  },
+  actionText2Card: {
+    fontSize: 14,
+    color: '#FFF',
+    opacity: 0.9,
   },
 });

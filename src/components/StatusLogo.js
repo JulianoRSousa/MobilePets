@@ -1,23 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  FlatList,
-  Image,
-  TouchableOpacity,
 } from 'react-native';
-import api from '../services/api';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 
 export default function StatusLogo(props) {
   var status = props.status;
-  if (status == 2) {
+  if (status == 2 || status == 'Lost') {
     return (
-    <View style={styles.InternBodyCard}>
+    <View>
       <Text
         style={{
           color: 'red',
@@ -28,12 +19,12 @@ export default function StatusLogo(props) {
       </Text>
     </View>
     )
-  } else  if (status == 1) {
+  } else  if (status == 1 || status == 'Found') {
     return (
-    <View style={styles.InternBodyCard}>
+    <View>
       <Text
         style={{
-          color: 'blue',
+          color: '#0f09',
           fontFamily: 'Chewy-Regular',
           alignContent: 'flex-start',
         }}>
@@ -43,20 +34,8 @@ export default function StatusLogo(props) {
     )
   } else {
     return (
-    <View style={styles.InternBodyCard}>
+    <View>
     </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  profilePicture: {
-    width: wp('13%'),
-    height: hp('7%'),
-    backgroundColor: 'green',
-    borderWidth: 2,
-    borderColor: 'red',
-    borderRadius: hp('100%'),
-    marginLeft: wp('5%'),
-  },
-});
