@@ -25,7 +25,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
   
 const styles = StyleSheet.create({
-  button: {
+  buttonBackup: {
     height: wp('18%'),
     borderWidth: 1.5,
     borderColor: 'white',
@@ -43,6 +43,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.35,
     shadowRadius: 2,
     overflow: "visible"
+  },
+  button: {
+    width: 150,
+    height: 50,
+    borderRadius: 3,
+    backgroundColor: '#7159c1',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
   },
   buttonText: {
     fontSize: wp('4.4%'),

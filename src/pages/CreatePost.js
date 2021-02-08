@@ -22,11 +22,11 @@ import {
 import LottieView from 'lottie-react-native';
 import PetLogo from '../components/PetLogo';
 import api from '../services/api';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import NormalButton from '../components/NormalButtons';
 import UserLogo from '../components/UserLogo';
 import StatusLogo from '../components/StatusLogo';
-import AsyncStorage from '@react-native-community/async-storage';
 import FormData from 'form-data';
 
 export default class App extends Component {
@@ -124,22 +124,25 @@ export default class App extends Component {
   async loadPets() {}
 
   async createPost() {
-    console.log('filePATH>>>>>> ', this.state.filePath);
+    console.log('filePATH>>>>>> ', 'file:/'+this.state.filePath.path);
 
-    const picture= new FormData();
-
-    picture.append('file', {
-      name: this.state.filePath.fileName,
+    const img = {
+      uri: 'file://' + this.state.filePath.path,
       type: this.state.filePath.type,
-      uri: 'file:/' +  this.state.filePath.uri
-    });
+      name:
+      this.state.filePath.fileName ||
+      this.state.filePath.path.substr(this.state.filePath.path.lastIndexOf('/') + 1),
+    };
+    const data = new FormData();
+
+    data.append('picture', img)
+    data.append('state',this.state.status)
+    data.append('description', this.state.description)
 
     await api
       .post(
-        '/createPost',
-        {},
-        {
-          data: {picture: picture, state: this.state.status, description: this.state.description},
+        '/createPost',data,
+        { 
           headers: {
             pet_id: '6019c07aa2fe3e001707508c',
             token: await AsyncStorage.getItem('token'),
@@ -272,9 +275,16 @@ export default class App extends Component {
         </View>
       </View>
     );
+  } 
+
+
+  stepThree(){
+    
   }
 
-  stepThree() {
+
+
+  stepFour() {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Adicione uma descrição:</Text>
@@ -351,7 +361,7 @@ export default class App extends Component {
     );
   }
 
-  StepFour() {
+  stepFive() {
     if (this.state.status == 2) {
       return (
         <View style={styles.containerCard}>

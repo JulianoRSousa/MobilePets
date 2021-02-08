@@ -15,7 +15,7 @@ import FirstScreen from '../src/pages/FirstScreen';
 import Pets from '../src/pages/Pets';
 import CreatePost from '../src/pages/CreatePost';
 import PageCamera from '../src/pages/Camera';
-import Piker from './pages/PicturePiker';
+import Search from '../src/pages/Search';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -69,12 +69,6 @@ const LoadingStack = createStackNavigator(
         headerTitle: 'Login',
       },
     },
-    // Feed: {
-    //   screen: Feed,
-    //   navigationOptions: {
-    //     headerTitle: 'Feed',
-    //   },
-    // },
   },
   {
     headerMode: 'none',
@@ -124,7 +118,7 @@ const FeedStack = createStackNavigator({
 const SearchStack = createStackNavigator(
   {
     Search: {
-      screen: StatusPost,
+      screen: Search,
       navigationOptions: {
         headerTitle: 'Search',
       },
@@ -146,7 +140,7 @@ const SearchStack = createStackNavigator(
 
 const DiscoverStack = createStackNavigator({
   Discover: {
-    screen: Piker,
+    screen: PageCamera,
     navigationOptions: {
       headerShown:false
     },
@@ -266,54 +260,3 @@ const App = createSwitchNavigator(
 );
 
 export default createAppContainer(App);
-/*
-import { createAppContainer } from 'react-navigation';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-
-
-import Login from './pages/Login';
-import FirstScreen from './pages/FirstScreen';
-import Feed from './pages/Feed';
-import CreateAcc from './pages/CreateAccount';
-import CreatePost from './pages/CreatePost';
-
-
-const Routes = createAppContainer(
-  createDrawerNavigator({
-    FirstScreen: {
-      screen: FirstScreen,
-      navigationOptions: {
-        drawerLabel:"Hook",
-      }
-    },
-    Login: {
-      screen: Login,
-      navigationOptions: {
-        drawerLabel:"Login",
-      }
-    },
-    Feed: {
-      screen: Feed,
-      navigationOptions: {
-        drawerLabel:"Feed",
-      }
-    },
-    CreatePost: {
-      screen: CreatePost,
-      navigationOptions: {
-        drawerLabel:"Criar um Post",
-        headerTitle: "Criar um Post",
-      }
-    },
-    CreateAcc: {
-      screen: CreateAcc,
-      navigationOptions: {
-        drawerLabel:"Criar uma Conta",
-        headerTitle: "Criar uma Conta",
-      }
-    },
-  })
-);
-
-export default Routes;
-*/
