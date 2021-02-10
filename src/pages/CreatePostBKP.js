@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useEffect} from 'react';
 import ImagePicker from 'react-native-image-picker';
 import {
   StyleSheet,
@@ -28,42 +28,39 @@ import UserLogo from '../components/UserLogo';
 import StatusLogo from '../components/StatusLogo';
 import FormData from 'form-data';
 
-export default function createPost({navigation}) {
-  const [step, setStep] = useState(1);
-  const [subStep, setSubStep] = useState(1);
-  const [file, setFile] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [status, setStatus] = useState(1);
-  const [userInfo, setUserInfo] = useState(null);
-  const [petInfo, setPetInfo] = useState([]);
-
-  useEffect(() => {
-    loadUser();
-  }, []);
-
-  function goToUser() {}
-
-  function goToPet() {}
-
-  function loadPets() {}
-
-  async function loadUser() {
-    var userInfo = await AsyncStorage.getItem('firstName');
-    setUserInfo(userInfo);
-    return;
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: 1,
+      subStep: 1,
+      uri: null,
+      filePath: null,
+      fileData: null,
+      description: null,
+      status: 1,
+      userInfo: null,
+      petInfo: [],
+    };
   }
 
-  function nextStep() {
-    setStep(step + 1);
-    return;
+  
+  
+  componentDidMount() {
+    this.loadUser();
   }
 
-  function previousStep() {
-    if (step >> 1) setStep(step - 1);
-    return;
+  nextStep() {
+    console.log('nextStep: step before: ', this.state.step);
+    this.setState({step: this.state.step + 1});
   }
 
-  function launchCamera() {
+  previousStep() {
+    if (this.state.step >> 1) this.setState({step: this.state.step - 1});
+    console.log('previousStep: step now: ', this.state.step);
+  }
+
+  launchCamera = () => {
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -73,17 +70,23 @@ export default function createPost({navigation}) {
     };
     ImagePicker.launchCamera(options, response => {
       if (response.didCancel) {
-        setSubStep(2);
+        this.setState({subStep: 2});
+        console.log('Canceled - substep = ', this.state.subStep);
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
-        setSubStep(2);
+        this.setState({subStep: 2});
       } else {
-        setFile(response);
+        const source = {uri: response.uri};
+        this.setState({
+          filePath: response,
+          fileData: response.data,
+          uri: response.uri,
+        });
       }
     });
-  }
+  };
 
-  function chooseImage() {
+  chooseImage = () => {
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -91,63 +94,84 @@ export default function createPost({navigation}) {
       },
     };
     ImagePicker.launchImageLibrary(options, response => {
+      const source = {uri: response.uri};
+
       if (response.didCancel) {
-        setSubStep(2);
+        this.setState({subStep: 2});
+        console.log('Canceled - substep = ', this.state.subStep);
       } else if (response.error) {
-        setSubStep(2);
+        console.log('ImagePicker Error: ', response.error);
+        this.setState({subStep: 2});
       } else {
-        setFile(response);
+        const source = {uri: response.uri};
+        this.setState({
+          filePath: response,
+          fileData: response.data,
+          uri: response.uri,
+        });
       }
     });
+  };
+  
+  async loadUser() {
+    var userInfo = await AsyncStorage.getItem('firstName');
+    this.setState({userInfo: userInfo});
   }
+  async createPost() {
+    console.log('filePATH>>>>>> ', 'file:/'+this.state.filePath.path);
 
-  async function createPost() {
     const img = {
-      uri: 'file://' + file.path,
-      type: file.type,
-      name: file.fileName || file.path.substr(file.path.lastIndexOf('/') + 1),
+      uri: 'file://' + this.state.filePath.path,
+      type: this.state.filePath.type,
+      name:
+      this.state.filePath.fileName ||
+      this.state.filePath.path.substr(this.state.filePath.path.lastIndexOf('/') + 1),
     };
     const data = new FormData();
 
-    data.append('picture', img);
-    data.append('state', status);
-    data.append('description', description);
+    data.append('picture', img)
+    data.append('state',this.state.status)
+    data.append('description', this.state.description)
 
     await api
-      .post('/createPost', data, {
-        headers: {
-          pet_id: '6019c07aa2fe3e001707508c',
-          token: await AsyncStorage.getItem('token'),
+      .post(
+        '/createPost',data,
+        { 
+          headers: {
+            pet_id: '6019c07aa2fe3e001707508c',
+            token: await AsyncStorage.getItem('token'),
+          },
         },
-      })
-      .then(alertPost());
+      )
+      .then(this.alertPost);
   }
 
-  function alertPost() {
-    return (
-      <View>
-        {Alert.alert(
-          'Parabéns',
-          'Post criado com sucesso',
-          [
-            {
-              text: 'Ok',
-              onPress: () => {
-                navigation.navigate('Feed');
+  alertPost(){
+    return(
+    <View>
+          {Alert.alert(
+            'Parabéns',
+            'Post criado com sucesso',
+            [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  () =>{}
+                },
               },
-            },
-          ],
-          {cancelable: false},
-        )}
-      </View>
-    );
+            ],
+            {cancelable: false},
+          )}
+        </View>
+    )
   }
 
-  function selectImage() {
-    if (file) {
-      nextStep();
+  selectImage() {
+    if (this.state.fileData) {
+      console.log('fileData: not null');
+      this.nextStep();
     } else {
-      if (subStep != 1) {
+      if (this.state.subStep != 1) {
         return (
           <View>
             {Alert.alert(
@@ -157,11 +181,11 @@ export default function createPost({navigation}) {
                 {
                   text: 'Ok',
                   onPress: () => {
-                    setSubStep(1);
+                    this.setState({subStep: 1});
                   },
                 },
               ],
-              {cancelable: false},
+              {cancelable: true},
             )}
           </View>
         );
@@ -169,7 +193,7 @@ export default function createPost({navigation}) {
     }
   }
 
-  function stepOne() {
+  stepOne() {
     return (
       <View style={styles.container}>
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
@@ -180,23 +204,22 @@ export default function createPost({navigation}) {
             <NormalButton
               icon={'camera'}
               title={'Tirar foto'}
-              onPress={() => launchCamera()}
+              onPress={this.launchCamera}
             />
           </View>
           <View style={styles.viewContainer}>
             <NormalButton
               icon={'folder-multiple-image'}
               title={'Escolher Imagem'}
-              onPress={() => chooseImage()}
+              onPress={this.chooseImage}
             />
           </View>
         </View>
-        <View style={styles.viewContainer}>{selectImage()}</View>
+        <View style={styles.viewContainer}>{this.selectImage()}</View>
       </View>
     );
   }
-
-  function stepTwo() {
+  stepTwo() {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Eu:</Text>
@@ -208,11 +231,11 @@ export default function createPost({navigation}) {
             borderColor: 'white',
           }}>
           <Picker
-            selectedValue={status}
+            selectedValue={this.state.status}
             style={styles.picker}
-            onValueChange={(itemValue, itemIndex) => {
-              setStatus(itemValue);
-            }}>
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({status: itemValue})
+            }>
             <Picker.Item label="Encontrei um pet" value={1} />
             <Picker.Item label="Perdi meu pet" value={2} />
             <Picker.Item label="Outro" value={3} />
@@ -226,10 +249,12 @@ export default function createPost({navigation}) {
           }}>
           <TouchableOpacity
             onPress={() => {
-              setStep(1);
-              setSubStep(1);
-              setDescription(null);
-              setStatus(1);
+              this.setState({
+                step: 1,
+                subStep: 1,
+                description: null,
+                status: 1,
+              });
             }}
             style={styles.nextButton}>
             <LottieView
@@ -247,7 +272,7 @@ export default function createPost({navigation}) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              nextStep();
+              this.nextStep();
             }}
             style={styles.nextButton}>
             <LottieView
@@ -262,9 +287,9 @@ export default function createPost({navigation}) {
         </View>
       </View>
     );
-  }
+  } 
 
-  function stepThree() {
+  stepThree() {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Adicione uma descrição:</Text>
@@ -282,7 +307,7 @@ export default function createPost({navigation}) {
             placeholder="Digite uma descrição"
             textAlignVertical="top"
             multiline={true}
-            onChangeText={value => setDescription(value)}
+            onChangeText={value => this.setState({description: value})}
             style={{
               backgroundColor: '#fffd',
               width: wp('90%'),
@@ -298,10 +323,12 @@ export default function createPost({navigation}) {
           }}>
           <TouchableOpacity
             onPress={() => {
-              setStep(2);
-              setSubStep(1);
-              setDescription(null);
-              setStatus(1);
+              this.setState({
+                step: 2,
+                subStep: 1,
+                description: null,
+                status: 1,
+              });
             }}
             style={styles.nextButton}>
             <LottieView
@@ -319,8 +346,10 @@ export default function createPost({navigation}) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setStep(4);
-              setSubStep(1);
+              this.setState({
+                step: 4,
+                subStep: 1,
+              });
             }}
             style={styles.nextButton}>
             <LottieView
@@ -337,32 +366,32 @@ export default function createPost({navigation}) {
     );
   }
 
-  function stepFour() {
-    if (status == 2) {
+  stepFour() {
+    if (this.state.status == 2) {
       return (
         <View style={styles.containerCard}>
           <View>
             <Text>Escolha o pet</Text>
           </View>
-          <View>{loadPets()}</View>
+          <View>{loadPets}</View>
         </View>
       );
     } else {
       return (
         <View style={styles.containerCard}>
           <Image
-            source={{uri: file.uri}}
+            source={{uri: this.state.uri}}
             style={styles.cardItemImagePlaceCard}
           />
           <PetLogo
-            onPress={() => {
-              goToPet();
-            }}
-            petName={petInfo.name}
+            onPress={() => console.log('Pet Name: ')}
+            petName={this.state.petInfo}
             style={styles.PetName}
           />
           <View style={styles.ViewContentDescription}>
-            <Text style={styles.subtitleStyleCard}>{description}</Text>
+            <Text style={styles.subtitleStyleCard}>
+              {this.state.description}
+            </Text>
           </View>
 
           <View style={styles.cardBodyCard}>
@@ -376,15 +405,15 @@ export default function createPost({navigation}) {
                 </TouchableOpacity>
               </View>
               <View style={styles.InternTextCard}>
-                <StatusLogo status={status} />
+                <StatusLogo status={this.state.status} />
               </View>
               <View style={styles.InternTextCard}>
                 <UserLogo
-                  title={userInfo}
+                  title={this.state.userInfo}
                   onPress={() => {
-                    goToUser();
+                    console.log('onpress');
                   }}
-                  source={file.uri}
+                  source={this.state.uri}
                 />
               </View>
             </View>
@@ -394,56 +423,60 @@ export default function createPost({navigation}) {
     }
   }
 
-  if (step == 1) {
-    return (
-      <View style={styles.container}>
-        <View>{stepOne()}</View>
-      </View>
-    );
-  } else if (step == 2) {
-    return (
-      <View style={styles.container}>
-        <View>{stepTwo()}</View>
-      </View>
-    );
-  } else if (step == 3) {
-    return <View style={styles.container}>{stepThree()}</View>;
-  } else if (step == 4) {
-    return (
-      <View style={styles.container}>
-        <View>{stepFour()}</View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: wp('70%'),
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              setStep(3);
-            }}
-            style={styles.nextButton}>
-            <LottieView
-              style={{
-                height: wp('20%'),
-                width: wp('20%'),
-                transform: [{rotate: '90deg'}, {translateY: 5.5}],
-              }}
-              source={require('../animations/nextArrow.json')}
-              autoPlay
-              loop
-              speed={1.2}
-              resizeMode={'cover'}
-            />
-          </TouchableOpacity>
-          <NormalButton
-            icon={'upload-outline'}
-            title={'Postar'}
-            onPress={() => createPost()}
-          />
+  render() {
+    if (this.state.step == 1) {
+      return (
+        <View style={styles.container}>
+          <View>{this.stepOne()}</View>
         </View>
-      </View>
-    );
+      );
+    } else if (this.state.step == 2) {
+      return (
+        <View style={styles.container}>
+          <View>{this.stepTwo()}</View>
+        </View>
+      );
+    } else if (this.state.step == 3) {
+      return <View style={styles.container}>{this.stepThree()}</View>;
+    } else if (this.state.step == 4) {
+      return (
+        <View style={styles.container}>
+          <View>{this.stepFour()}</View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: wp('70%'),
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({
+                  step: 3,
+                });
+              }}
+              style={styles.nextButton}>
+              <LottieView
+                style={{
+                  height: wp('20%'),
+                  width: wp('20%'),
+                  transform: [{rotate: '90deg'}, {translateY: 5.5}],
+                }}
+                source={require('../animations/nextArrow.json')}
+                autoPlay
+                loop
+                speed={1.2}
+                resizeMode={'cover'}
+              />
+            </TouchableOpacity>
+            <NormalButton
+              icon={'upload-outline'}
+              title={'Postar'}
+              onPress={this.createPost.bind(this)}
+            />
+          </View>
+        </View>
+      );
+    }
   }
 }
 

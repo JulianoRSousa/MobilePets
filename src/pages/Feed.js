@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, TouchableOpacity, StatusBar, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar,
+  Text,
+} from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as env from '../../dotEnv';
@@ -13,16 +19,17 @@ import PostView from '../components/PostView';
 import OptionsMenu from 'react-native-option-menu';
 
 export default function Feed({navigation}) {
+  
+  const [updateTimes, setupdateTimes] = useState(0)
+
+  useEffect(() => {
+  }, [updateTimes]);
+
+
   async function logOut() {
     const token = await AsyncStorage.getItem('token');
     if (token !== null) {
       try {
-        // await AsyncStorage.removeItem('token');
-        // await AsyncStorage.removeItem('username');
-        // await AsyncStorage.removeItem('firstName');
-        // await AsyncStorage.removeItem('lastName');
-        // await AsyncStorage.removeItem('male');
-        // await AsyncStorage.removeItem('picture_url');
         await AsyncStorage.multiRemove([
           'token',
           'username',
@@ -59,9 +66,13 @@ export default function Feed({navigation}) {
     navigation.navigate(page);
   }
 
+  function updateFeed() {
+    setupdateTimes(updateTimes+1)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-    <StatusBar backgroundColor={'#ff8636'} />
+      <StatusBar backgroundColor={'#ff8636'} />
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.topBarInternal}>
           <Icon name="paw" size={hp('5%')} color="white" />
@@ -71,16 +82,15 @@ export default function Feed({navigation}) {
         <OptionsMenu
           customButton={myIcon}
           destructiveIndex={1}
-          options={['Criar post', 'Delete', 'Logout', 'Cancel']}
+          options={['Criar post', 'Logout']}
           actions={[
             () => navegar('CreatePost'),
-            () => console.log('op2'),
-            logOut,
+            () => logOut(),
           ]}
         />
       </View>
       <View style={styles.view}>
-        <PostView />
+        <PostView/>
       </View>
     </SafeAreaView>
   );

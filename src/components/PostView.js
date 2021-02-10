@@ -23,12 +23,11 @@ import PetLogo from '../components/PetLogo';
 export default function PostView({navigation}) {
   const [postlists, setPostlists] = useState([]);
   const [userInfo, setUserInfo] = useState([]);
+  const [updateTimes, setUpdateTimes] = useState(0);
 
   useEffect(() => {
-    getUser();
-    getData();
-    console.log(postlists);
-  }, []);
+    getUser().then(getData());
+  },[updateTimes]);
 
   async function getData() {
     await api
@@ -37,7 +36,7 @@ export default function PostView({navigation}) {
           token: await AsyncStorage.getItem('token'),
         },
       })
-      .then(response => setPostlists(response.data));
+      .then(response => setPostlists(response.data.reverse()));
   }
 
   async function getUser() {
@@ -48,7 +47,6 @@ export default function PostView({navigation}) {
         },
       })
       .then(response => setUserInfo(response.data));
-    await AsyncStorage.setItem();
   }
 
   function separator() {
@@ -57,30 +55,32 @@ export default function PostView({navigation}) {
 
   function renderHeader() {
     return (
-      <TouchableOpacity>
-        <StatusBar backgroundColor={'#ff8636'} />
+      <View style={{flexDirection: 'row', backgroundColor: 'red'}}>
+        <TouchableOpacity style={{flex: 1}}>
+          <StatusBar backgroundColor={'#ff8636'} />
 
-        <View style={styles.topLayout}>
-          <View style={styles.view1} />
+          <View style={styles.topLayout}>
+            <View style={styles.view1} />
 
-          <View style={styles.userInfo}>
-            <Image
-              style={styles.picture1}
-              source={{
-                uri: userInfo.picture_url,
-              }}
-            />
-            <View>
-              <Text style={styles.userNameText}>{userInfo.firstName}</Text>
-              <Text style={styles.userInfoText}>144 seguidores</Text>
-              <TouchableOpacity>
-                <Text style={styles.userInfoText}> 2 Pets</Text>
-              </TouchableOpacity>
+            <View style={styles.userInfo}>
+              <Image
+                style={styles.picture1}
+                source={{
+                  uri: userInfo.picture_url,
+                }}
+              />
+              <View>
+                <Text style={styles.userNameText}>{userInfo.firstName}</Text>
+                <Text style={styles.userInfoText}>144 seguidores</Text>
+                <TouchableOpacity>
+                  <Text style={styles.userInfoText}> 2 Pets</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+            <View style={styles.view1} />
           </View>
-          <View style={styles.view1} />
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     );
   }
 
@@ -108,6 +108,7 @@ export default function PostView({navigation}) {
   return (
     <View style={styles.container}>
       <FlatList
+        extraData={postlists}
         navigation={navigation}
         ListHeaderComponent={renderHeader}
         data={postlists}
@@ -134,10 +135,10 @@ export default function PostView({navigation}) {
               <OptionsMenu
                 customButton={postOptions}
                 destructiveIndex={1}
-                options={['Seguir ' + item.user_name, 'Denunciar']}
+                options={['Seguir ' + item.user_name, 'Denunciar post']}
                 actions={[
                   () => follow(item.user_name),
-                  () => console.log('Denunciar'),
+                  () => console.log('Denunciar post'),
                 ]}
               />
             </View>
@@ -179,6 +180,26 @@ export default function PostView({navigation}) {
           </View>
         )}
       />
+      <TouchableOpacity
+        style={{
+          backgroundColor: '#fff0',
+          position: 'absolute',
+          right: 0,
+          top: 0,
+        }}
+        
+        onPress={() => {setUpdateTimes(updateTimes+1)}}>
+        <Icon
+          name="refresh"
+          style={{
+            alignContent: 'flex-end',
+            marginHorizontal: wp('2%'),
+            marginVertical: wp('2%'),
+          }}
+          size={hp('5%')}
+          color="#fff"
+        />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -292,15 +313,6 @@ const styles = StyleSheet.create({
     borderColor: '#444',
     borderWidth: 1,
     borderRadius: 2,
-  },
-  profilePicture: {
-    width: wp('13%'),
-    height: hp('7%'),
-    backgroundColor: 'green',
-    borderWidth: 2,
-    borderColor: 'red',
-    borderRadius: hp('100%'),
-    marginLeft: wp('5%'),
   },
   picture: {
     width: wp('100%'),
