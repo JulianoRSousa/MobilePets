@@ -205,18 +205,10 @@ export default function PostView({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  container1: {
-    flex: 1,
-  },
   ViewContentDescription: {
     backgroundColor: '#ddd2',
     position: 'absolute',
     top: wp('100%'),
-  },
-  PetName: {
-    backgroundColor: '#0003',
-    position: 'absolute',
-    top: wp('76%'),
   },
   topLayout: {
     backgroundColor: '#ff8636',
@@ -254,11 +246,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#ff8636',
   },
-  view2: {
-    flex: 1,
-    backgroundColor: '#eeeeee',
-    flexDirection: 'row',
-  },
   petName: {
     fontSize: wp('5.5%'),
     textAlign: 'left',
@@ -274,36 +261,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 0,
     borderBottomRightRadius: 0,
   },
-  logo: {
-    height: 32,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-    marginTop: 30,
-  },
-  button: {
-    height: 42,
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 2,
-    marginTop: 15,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
   container: {
     flex: 1,
-  },
-  view2: {
-    paddingHorizontal: 6,
-    alignContent: 'flex-end',
-    justifyContent: 'flex-end',
-    transform: [{translateY: hp('3%')}],
-    flexDirection: 'row',
-    flex: 1,
-    backgroundColor: 'red',
   },
   listItem: {
     aspectRatio: 1.5,
@@ -391,11 +350,6 @@ const styles = StyleSheet.create({
     right: 0,
     height: wp('14%'),
   },
-  bodyContentCard: {
-    padding: 16,
-    paddingTop: 24,
-    justifyContent: 'center',
-  },
   titleStyleCard: {
     fontSize: 24,
     color: '#FFF',
@@ -408,26 +362,8 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     borderRadius: 30,
   },
-  actionBodyCard: {
-    padding: 8,
-    flexDirection: 'row',
-  },
   actionButton1Card: {
     padding: 8,
     height: 36,
-  },
-  actionText1Card: {
-    fontSize: 14,
-    color: '#FFF',
-    opacity: 0.9,
-  },
-  actionButton2Card: {
-    padding: 8,
-    height: 36,
-  },
-  actionText2Card: {
-    fontSize: 14,
-    color: '#FFF',
-    opacity: 0.9,
   },
 });
