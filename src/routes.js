@@ -11,49 +11,47 @@ import CreateAccount from './pages/CreateAccount';
 import ForgotPassword from '../src/pages/ForgotPassword';
 import StatusPost from '../src/pages/StatusPost';
 import Feed from '../src/pages/Feed';
-import FirstScreen from '../src/pages/FirstScreen'; 
+import FirstScreen from '../src/pages/FirstScreen';
 import Pets from '../src/pages/Pets';
 import CreatePost from '../src/pages/CreatePost';
 import PageCamera from '../src/pages/Camera';
+import IconsList from '../src/pages/IconsList';
 import Search from '../src/pages/Search';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const AuthStack = createStackNavigator(
-  {
-    SignIn: {
-      screen: Login,
-      navigationOptions: {
-        headerTitle: 'Entrar',
-        headerShown:false
-      },
-    },
-    CreateAccount: {
-      screen: CreateAccount,
-      navigationOptions: {
-        headerShown:true,
-        headerStyle: {
-          backgroundColor: '#fa8a41',
-        },
-        headerTintColor: 'white',
-        headerTitleAlign: 'center',
-        headerTitle: 'Criar Conta',
-      },
-    },
-    ForgotPassword: {
-      screen: ForgotPassword,
-      navigationOptions: {
-        headerShown:true,
-        headerStyle: {
-          backgroundColor: '#fa8a41',
-        },
-        headerTintColor: 'white',
-        headerTitleAlign: 'center',
-        headerTitle: 'Recuperar conta',
-      },
+const AuthStack = createStackNavigator({
+  SignIn: {
+    screen: Login,
+    navigationOptions: {
+      headerTitle: 'Entrar',
+      headerShown: false,
     },
   },
-);
+  CreateAccount: {
+    screen: CreateAccount,
+    navigationOptions: {
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: '#fa8a41',
+      },
+      headerTintColor: 'white',
+      headerTitleAlign: 'center',
+      headerTitle: 'Criar Conta',
+    },
+  },
+  ForgotPassword: {
+    screen: ForgotPassword,
+    navigationOptions: {
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: '#fa8a41',
+      },
+      headerTintColor: 'white',
+      headerTitleAlign: 'center',
+      headerTitle: 'Recuperar conta',
+    },
+  },
+});
 
 const LoadingStack = createStackNavigator(
   {
@@ -140,9 +138,9 @@ const SearchStack = createStackNavigator(
 
 const DiscoverStack = createStackNavigator({
   Discover: {
-    screen: PageCamera,
+    screen: IconsList,
     navigationOptions: {
-      headerShown:false
+      headerShown: false,
     },
   },
 });
@@ -152,22 +150,21 @@ const MainTabs = createBottomTabNavigator(
     Feed: {
       screen: FeedStack,
       navigationOptions: {
-      tabBarIcon: () => <Icon name="newspaper" size={25} color='white' />,
+        tabBarIcon: () => <Icon name="newspaper" size={25} color="white" />,
         tabBarLabel: 'Feed',
       },
     },
     Search: {
       screen: SearchStack,
       navigationOptions: {
-      tabBarIcon: () => <Icon name="magnify" size={25} color='white'/>,
+        tabBarIcon: () => <Icon name="magnify" size={25} color="white" />,
         tabBarLabel: 'Buscar',
-        
       },
     },
     Discover: {
       screen: DiscoverStack,
       navigationOptions: {
-      tabBarIcon: () => <Icon name="account" size={25} color='white'/>,
+        tabBarIcon: () => <Icon name="account" size={25} color="white" />,
         tabBarLabel: 'Meu Perfil',
       },
     },

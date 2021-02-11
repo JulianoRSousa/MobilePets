@@ -19,12 +19,9 @@ import PostView from '../components/PostView';
 import OptionsMenu from 'react-native-option-menu';
 
 export default function Feed({navigation}) {
-  
-  const [updateTimes, setupdateTimes] = useState(0)
+  const [updateTimes, setupdateTimes] = useState(0);
 
-  useEffect(() => {
-  }, [updateTimes]);
-
+  useEffect(() => {}, [updateTimes]);
 
   async function logOut() {
     const token = await AsyncStorage.getItem('token');
@@ -55,8 +52,12 @@ export default function Feed({navigation}) {
   const myIcon = (
     <Icon
       name="menu"
-      style={{alignContent: 'flex-end'}}
-      size={hp('5%')}
+      style={{
+        alignContent: 'flex-end',
+        marginHorizontal: wp('2%'),
+        marginVertical: wp('2%'),
+      }}
+      size={wp('8%')}
       color="white"
     />
   );
@@ -67,7 +68,7 @@ export default function Feed({navigation}) {
   }
 
   function updateFeed() {
-    setupdateTimes(updateTimes+1)
+    setupdateTimes(updateTimes + 1);
   }
 
   return (
@@ -83,14 +84,11 @@ export default function Feed({navigation}) {
           customButton={myIcon}
           destructiveIndex={1}
           options={['Criar post', 'Logout']}
-          actions={[
-            () => navegar('CreatePost'),
-            () => logOut(),
-          ]}
+          actions={[() => navegar('CreatePost'), () => logOut()]}
         />
       </View>
       <View style={styles.view}>
-        <PostView/>
+        <PostView />
       </View>
     </SafeAreaView>
   );
