@@ -3705,11 +3705,11 @@ export default function IconsList({navigation}) {
   ];
 
   return (
-    <View style={{backgroundColor:'yellow', flex:1, justifyContent:'center'}}>
+    <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#ff8636'}}>
       <ColorPicker
         height={10}
         width={80}
-        fontSize={wp('6%')}
+        fontSize={wp('5.5%')}
         backgroundColor={'white'}
         icon={'home'}
         iconColor={'black'}

@@ -1,5 +1,5 @@
-import React, {Component, useState, useEffect} from 'react';
-import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -35,6 +35,8 @@ export default function ColorPicker(props) {
             height: sizeWidth,
             width: sizeWidth,
             flexDirection: 'row',
+            position: 'absolute',
+            top: sizeHeight,
           }}>
           <View>
             <TouchableOpacity
@@ -42,8 +44,6 @@ export default function ColorPicker(props) {
                 backgroundColor: 'black',
                 height: sizeWidth / 3,
                 width: sizeWidth / 3,
-                borderWidth: 1,
-                borderColor: 'white',
               }}
               onPress={() => {
                 setSelectedColor('black'), setPressed(false);
@@ -54,8 +54,6 @@ export default function ColorPicker(props) {
                 backgroundColor: '#fff',
                 height: sizeWidth / 3,
                 width: sizeWidth / 3,
-                borderWidth: 1,
-                borderColor: '#0004',
               }}
               onPress={() => {
                 setSelectedColor('white'), setPressed(false);
@@ -66,8 +64,6 @@ export default function ColorPicker(props) {
                 backgroundColor: 'gray',
                 height: sizeWidth / 3,
                 width: sizeWidth / 3,
-                borderWidth: 1,
-                borderColor: 'white',
               }}
               onPress={() => {
                 setSelectedColor('gray'), setPressed(false);
@@ -80,8 +76,6 @@ export default function ColorPicker(props) {
                 backgroundColor: 'red',
                 height: sizeWidth / 3,
                 width: sizeWidth / 3,
-                borderWidth: 1,
-                borderColor: 'white',
               }}
             />
             <TouchableOpacity
@@ -89,8 +83,6 @@ export default function ColorPicker(props) {
                 backgroundColor: 'red',
                 height: sizeWidth / 3,
                 width: sizeWidth / 3,
-                borderWidth: 1,
-                borderColor: 'white',
               }}
             />
             <TouchableOpacity
@@ -98,8 +90,6 @@ export default function ColorPicker(props) {
                 backgroundColor: 'red',
                 height: sizeWidth / 3,
                 width: sizeWidth / 3,
-                borderWidth: 1,
-                borderColor: 'white',
               }}
             />
           </View>
@@ -109,8 +99,6 @@ export default function ColorPicker(props) {
                 backgroundColor: 'red',
                 height: sizeWidth / 3,
                 width: sizeWidth / 3,
-                borderWidth: 1,
-                borderColor: 'white',
               }}
             />
             <TouchableOpacity
@@ -118,8 +106,6 @@ export default function ColorPicker(props) {
                 backgroundColor: 'red',
                 height: sizeWidth / 3,
                 width: sizeWidth / 3,
-                borderWidth: 1,
-                borderColor: 'white',
               }}
             />
             <TouchableOpacity
@@ -127,15 +113,13 @@ export default function ColorPicker(props) {
                 backgroundColor: 'red',
                 height: sizeWidth / 3,
                 width: sizeWidth / 3,
-                borderWidth: 1,
-                borderColor: 'white',
               }}
             />
           </View>
         </View>
       );
     } else {
-      return <View />;
+      return;
     }
   }
 
@@ -160,21 +144,26 @@ export default function ColorPicker(props) {
             paddingHorizontal: sizeHeight / 4,
             justifyContent: 'center',
             color: textColor + '',
-            fontSize: sizeWidth/15,
+            fontSize: sizeHeight / 2,
           }}>
           {selectedColor}
         </Text>
-        <TouchableOpacity onPress={() => setPressed(true)}>
+        <TouchableOpacity
+          onPress={() => {
+            pressed ? setPressed(false) : setPressed(true);
+          }}>
           <Icon
             style={{
               alignSelf: 'flex-end',
               justifyContent: 'flex-end',
               borderLeftWidth: 1,
-              borderColor: '#0004',
+              borderColor: '#2224',
+              borderRadius: sizeHeight / 1.5,
+              paddingHorizontal: sizeHeight / 8,
             }}
-            name={props.icon}
+            name={'arrow-down-drop-circle'}
             color={props.iconColor}
-            size={sizeHeight}
+            size={sizeHeight / 1.2}
           />
         </TouchableOpacity>
       </View>
