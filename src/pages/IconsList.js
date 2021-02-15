@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ColorPicker from '../components/ColorPicker';
 
 export default function IconsList({navigation}) {
   var item = [
@@ -3704,8 +3705,18 @@ export default function IconsList({navigation}) {
   ];
 
   return (
-    <View>
-      <FlatList
+    <View style={{backgroundColor:'yellow', flex:1, justifyContent:'center'}}>
+      <ColorPicker
+        height={10}
+        width={80}
+        fontSize={wp('6%')}
+        backgroundColor={'white'}
+        icon={'home'}
+        iconColor={'black'}
+      />
+    </View>
+      
+      /* <FlatList
         navigation={navigation}
         data={item}
         vertical
@@ -3720,8 +3731,7 @@ export default function IconsList({navigation}) {
             </View>
           </View>
         )}
-      />
-    </View>
+      /> */
   );
 
   //  dia - 10/12 - 20:30
