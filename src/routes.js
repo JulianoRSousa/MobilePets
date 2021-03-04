@@ -12,6 +12,7 @@ import ForgotPassword from '../src/pages/ForgotPassword';
 import StatusPost from '../src/pages/StatusPost';
 import Feed from '../src/pages/Feed';
 import FirstScreen from '../src/pages/FirstScreen';
+import TestScreen from '../src/pages/TestScreen';
 import Pets from '../src/pages/Pets';
 import CreatePost from '../src/pages/CreatePost';
 import PageCamera from '../src/pages/Camera';
@@ -55,6 +56,12 @@ const AuthStack = createStackNavigator({
 
 const LoadingStack = createStackNavigator(
   {
+    TestScreen: {
+      screen: TestScreen,
+      navigationOptions: {
+        headerTitle: 'Test',
+      },
+    },
     FirstScreen: {
       screen: FirstScreen,
       navigationOptions: {
