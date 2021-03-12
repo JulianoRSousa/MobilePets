@@ -55,7 +55,7 @@ export default function PostView({navigation}) {
 
   function renderHeader() {
     return (
-      <View style={{flexDirection: 'row', backgroundColor: 'red'}}>
+      <View style={{flexDirection: 'row', backgroundColor:'#ff8636'}}>
         <TouchableOpacity style={{flex: 1}}>
           <StatusBar backgroundColor={'#ff8636'} />
 

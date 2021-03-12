@@ -56,12 +56,12 @@ const AuthStack = createStackNavigator({
 
 const LoadingStack = createStackNavigator(
   {
-    TestScreen: {
-      screen: TestScreen,
-      navigationOptions: {
-        headerTitle: 'Test',
-      },
-    },
+    // TestScreen: {
+    //   screen: TestScreen,
+    //   navigationOptions: {
+    //     headerTitle: 'Test',
+    //   },
+    // },
     FirstScreen: {
       screen: FirstScreen,
       navigationOptions: {

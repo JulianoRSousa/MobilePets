@@ -17,6 +17,8 @@ import {
 } from 'react-native-responsive-screen';
 import PostView from '../components/PostView';
 import OptionsMenu from 'react-native-option-menu';
+import PetsMenu from '../components/PetsMenu';
+import ColorPicker from '../components/ColorPicker';
 
 export default function Feed({navigation}) {
   const [updateTimes, setupdateTimes] = useState(0);
@@ -24,6 +26,7 @@ export default function Feed({navigation}) {
   useEffect(() => {}, [updateTimes]);
 
   async function logOut() {
+    console.log('logout')
     const token = await AsyncStorage.getItem('token');
     if (token !== null) {
       try {
@@ -80,18 +83,17 @@ export default function Feed({navigation}) {
 
           <Text style={styles.appNameText}>{env.APPNAME}</Text>
         </TouchableOpacity>
-        <OptionsMenu
-          customButton={myIcon}
-          destructiveIndex={1}
-          options={['Criar post', 'Logout']}
-          actions={[() => navegar('CreatePost'), () => logOut()]}
-        />
+        <PetsMenu menuTags={['teste','teste2']} actions={[teste]}  />
       </View>
       <View style={styles.view}>
         <PostView />
       </View>
     </SafeAreaView>
   );
+
+  function teste(){
+    console.log('ddd')
+  }
 }
 
 const styles = StyleSheet.create({

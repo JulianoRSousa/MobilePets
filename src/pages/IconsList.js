@@ -3,6 +3,7 @@ import {View, Text, FlatList} from 'react-native';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ColorPicker from '../components/ColorPicker';
+import PetsMenu from '../components/PetsMenu';
 
 export default function IconsList({navigation}) {
   var item = [
@@ -3706,14 +3707,7 @@ export default function IconsList({navigation}) {
 
   return (
     <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#ff8636'}}>
-      <ColorPicker
-        height={10}
-        width={80}
-        fontSize={wp('5.5%')}
-        backgroundColor={'white'}
-        icon={'home'}
-        iconColor={'black'}
-      />
+      <PetsMenu/>
     </View>
       
       /* <FlatList
